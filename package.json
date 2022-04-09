@@ -1,16 +1,29 @@
 {
-  "name": "confusion",
+  "name": "ganbaty",
   "version": "1.0.0",
-  "description": "This is a website for Ristorante Con Fusion",
+  "description": "This is a AI webpage",
   "main": "index.html",
   "scripts": {
     "start": "npm run lite",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lite": "lite-server"
   },
-  "author": "",
+  "author": "David Perales Rodriguez",
   "license": "ISC",
-    "devDependencies": {
-    "lite-server": "^2.3.0"
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/L00vely/Ganbaty.git"
+  },
+  "bugs": {
+    "url": "https://github.com/L00vely/Ganbaty/issues"
+  },
+  "homepage": "https://github.com/L00vely/Ganbaty#readme",
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.12.9"
   }
 }
