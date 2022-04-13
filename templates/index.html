@@ -4,18 +4,33 @@
 
 {% block navbar%}
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+        <a class="nav-link active" aria-current="page" href="/">Inicio</a>
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Herramientas
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="/reglas_asociacion.html">Reglas de asociación</a></li>
             <li><a class="dropdown-item" href="#">Clustering</a></li>
             
         </ul>
     </li>
+{% endblock%}
+
+{% block jumbotron%}
+    <header class="jumbotron">
+        <div class="container">
+            <div class="row row-header">
+                <div class="col-12 col-sm-6">
+                    <h1>Ganbaty</h1>
+                    <p>Una herramienta de IA diseñada por David Perales Rodríguez para la asignatura de Inteligencia Artificial de la Facultad de Ingeniería en la UNAM</p>
+                </div>
+                <div class="col-12 col-sm">
+                </div>
+            </div>
+        </div>
+    </header>
 {% endblock%}
 
 
@@ -31,7 +46,7 @@
     <div class="row row-content">
         <div class="col-12 col-sm-6">
             <h2>¿Qué es Ganbaty?</h2>
-            <p>Es una herramienta con el fin de crear una herramienta que emplea algoritmos de IA como reglas de asociación, clustering particional o jerárquico.</p>
+            <p>Es un proyecto para la asignatura de IA con el fin de crear una herramienta que emplea algoritmos de IA como reglas de asociación, clustering particional o jerárquico.</p>
             <p>The restaurant traces its humble beginnings to <em>The Frying Pan</em>, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.</p>
         </div>
         <div class="col-12 col-sm">
