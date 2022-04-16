@@ -17,10 +17,15 @@
 }
 
 .jumbotron {
-    padding:40px 30px 40px 30px;
-    margin:0px auto;
+    padding:50px 30px 20px 30px;
+    margin: 20px auto;
     background: #28b78d ;
-    color:floralwhite;
+    color:#243743;
+}
+
+.breadcrumb{
+    color: #243743;
+    font-size: medium;
 }
 
 address{
@@ -33,9 +38,59 @@ address{
 body{
     padding:50px 0px 0px 0px;
     z-index:0;
+    color: black;
 }
 
 .navbar-dark {
     background-color: #000000;
 }
 
+table {
+    font-family: arial, sans-serif;
+    font-size:medium;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 3px solid #737373;
+    text-align:center;
+    padding: 4px;
+}
+
+thead{
+    background: #28b78d ;
+    
+}
+
+table-striped{
+    background: #243743;
+}
+
+#mostrar{
+    background: #28b78d ;
+    
+}
+/*
+#ra_csvfile {
+    border: 1px solid #243743;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    
+}
+*/
+
+label {
+    background-color: #28b78d;
+    color: white;
+    padding: 0.5rem;
+    font-family: sans-serif;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+
+  #ra_csvfile + label {
+	cursor: pointer; /* "hand" cursor */
+}

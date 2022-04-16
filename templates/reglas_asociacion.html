@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block title%}Ganbaty: Reglas de asociación{% endblock%}
+{% block title%}GANBATY: Reglas de asociación{% endblock%}
 
 {% block navbar%}
     <li class="nav-item">
@@ -20,7 +20,7 @@
 
 {% block jumbotron%}
     <header class="jumbotron">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row row-header">
                 <div class="col-12 col-sm-6">
                     <h1>Reglas de asociación</h1>
@@ -60,13 +60,50 @@
     <div class="row row-content">
         <div class="col-12">
             <h2>Importa tu archivo csv</h2>
-            <form action="/reglas_asociacion.html/tabla" method="POST" enctype="multipart/form-data">
-                <input type="file" id="ra_csvfile" name="ra_csvfile" accept=".csv">
-                <input type="submit">
-            </form>
+            <div class="btn-group" role="group">
+                <form action="/reglas_asociacion.html" method="POST" enctype="multipart/form-data">
+                    <input type = "file" id="ra_csvfile" name="ra_csvfile" accept=".csv" hidden />
+                    <label for="ra_csvfile">Elige tu archivo .csv</label>
+                    <input type = "submit" id="submit"/ hidden>
+                    <label for="submit">Subir archivo</label>
+                </form>
+            </div>
+            
         </div>
     </div>
-  
+
+    <div class="row row-content">
+        <div class="col-12">
+            <h2>Dataframe del archivo {{filename}}</h2>
+        </div>
+        <!--{% for table in tables %}
+            {{titles[loop.index]}}
+            {{ table|safe }}
+        {% endfor %}-->
+    </div>
+    <div class="row row-content">
+        <div class="col-12">
+            <h2>Agrupando los elementos con frecuencias y porcentaje</h2>
+        </div>
+        {% for table in tables %}
+            {{titles[loop.index]}}
+            {{ table|safe }}
+        {% endfor %}
+    </div>
+    <div class="row row-content">
+        <div class="col-12">
+            <h2>Agrupando los elementos con frecuencias y porcentaje</h2>
+        </div>
+        <form>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Email address</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              </div>
+          </form>
+        
+    </div>
+    
+    
 {% endblock %}
 
 
