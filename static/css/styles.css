@@ -14,6 +14,7 @@
     background-color: #000000;
     margin:0px auto;
     padding: 20px 0px 20px 0px;
+    color: white;
 }
 
 .jumbotron {
@@ -27,13 +28,6 @@
     color: #243743;
     font-size: medium;
 }
-
-address{
-    font-size:80%;
-    margin:0px;
-    color:#0f0f0f;
-}
-
 
 body{
     padding:50px 0px 0px 0px;
@@ -59,7 +53,8 @@ td, th {
 }
 
 thead{
-    background: #28b78d ;
+    background: black;
+    color: white;
     
 }
 
@@ -67,30 +62,50 @@ table-striped{
     background: #243743;
 }
 
-#mostrar{
-    background: #28b78d ;
-    
+b{
+    color: #243743;
 }
-/*
-#ra_csvfile {
-    border: 1px solid #243743;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
-    
+
+.submit{
+    background-color: #28b78d;
+    cursor: pointer; /* "hand" cursor */
+
 }
-*/
 
 label {
-    background-color: #28b78d;
+    background-color: #243743;
     color: white;
     padding: 0.5rem;
     font-family: sans-serif;
     border-radius: 0.3rem;
-    cursor: pointer;
+    margin-bottom: 20px;
     margin-top: 1rem;
+    margin-right: 5px;
   }
 
   #ra_csvfile + label {
 	cursor: pointer; /* "hand" cursor */
 }
+
+.card-title{
+    color: #243743;
+}
+
+a {
+    outline: none;
+    text-decoration: none;
+    padding: 2px 1px;
+    
+    color: #243743;
+  }
+  
+ 
+  
+ 
+  
+
+  
+  a:active {
+    background: black;
+    color: white;
+  }

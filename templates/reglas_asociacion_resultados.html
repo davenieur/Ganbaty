@@ -12,6 +12,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="#">Métricas de distancia</a></li>
             <li><a class="dropdown-item" href="#">Clustering</a></li>
             
         </ul>
@@ -46,27 +47,13 @@
             <li class="breadcrumb-item active">Reglas de asociación</li>
         </ol>
     </div>
-
+   
     <div class="row row-content">
-        <div class="col-12 col-sm-6">
-            <h2>¿Qué son las reglas de asociación?</h2>
-            
-        </div>
-    </div>
-
-
-    <div class="row row-content">
-        <div class="col-12 flex-column">
-            <h2>Importa tu archivo csv</h2>
-            <div class="btn-group" role="group">
-                <form action="/reglas_asociacion" method="POST" enctype="multipart/form-data">
-                    <input type = "file" id="ra_csvfile" name="ra_csvfile" accept=".csv" hidden />
-                    <label for="ra_csvfile">Elige tu archivo .csv</label>
-                    <input type = "submit" id="submit"/ hidden>
-                    <label class="submit"for="submit">Subir archivo</label>
-                </form>
-            </div>
-            
+        <div class="col-12">
+            <h3>Número de reglas: <b>{{Reglas|length}}</b></h3>
+            <h3>Soporte: {{soporte}}</h3>
+            <h3>Confianza: {{confianza}}</h3>
+            <h3>Elevación: {{elevacion}}</h3>
         </div>
     </div>
     

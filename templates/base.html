@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title%}{% endblock%}</title>
-
+    <title>Ganbaty: {% block title%}{% endblock%}</title>
+    <link rel="icon" href="{{url_for('static',filename='img/logo.png')}}">
     <!-- Bootstrap & CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">
 </head>
-<body>
+<body d-flex flex-column>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" >
         <div class="container-fluid">
@@ -48,28 +48,32 @@
         {% endblock%}
     </div>
 
-    <!-- Footer -->
-    <footer class="footer text-center text-white">
-        <div>
-            <div>             
-                <div>
-                    <h5>Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="/">Inicio</a></li>
-                        <li><a href="/reglas_asociacion.html">Reglas de asociación</a></li>
-                        <li><a href="#">Clustering particional</a></li>
-                        <li><a href="#">Clustering jerárquico</a></li>
+        <!-- Footer -->
+    <footer class="footer">
+        <div class="container py-5">
+            <div class="row py-4">
+                <div class="col-6 mb-4 mb-lg-0"><a href="/"><img src="{{url_for('static',filename='img/logo.png')}}" alt="" width="128" class="mb-3"></a>
+                    <p class="font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+                </div>
+                <div class="col-6 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="text-uppercase font-weight-bold mb-4">Herramientas</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><a href="\reglas_asociacion">Reglas de asociación</a></li>
+                        <li class="mb-2"><a href="#">Métricas de distancia</a></li>
+                        <li class="mb-2"><a href="#">Clustering</a></li>
                     </ul>
                 </div>
-               
-           </div>
-           <div>             
-                <div>
-                    <p>© Copyright 2022 Ganbaty</p>
-                </div>
-           </div>
+            </div>
+        </div>
+
+        <!-- Copyrights -->
+        <div class="py-4">
+            <div class="container text-center">
+                <p class="mb-0 py-2">© 2022 GANBATY, Todos los derechos reservados.</p>
+            </div>
         </div>
     </footer>
+
     <!-- Popper.js & Bootstrap JS. -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
