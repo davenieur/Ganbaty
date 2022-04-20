@@ -12,7 +12,6 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="#">Métricas de distancia</a></li>
             <li><a class="dropdown-item" href="#">Clustering</a></li>
             
         </ul>
@@ -47,29 +46,12 @@
             <li class="breadcrumb-item active">Reglas de asociación</li>
         </ol>
     </div>
-   
-   
 
-    <div class="row row-content">
-        <div class="col-12">
-            <h2>Parametros elegidos</h2>
-            <h4>Soporte: {{soporte}}</h4>
-            <h4>Confianza: {{confianza}}</h4>
-            <h4>Elevación: {{elevacion}}</h4>
-        </div>
+    <div class="col-12">
+        <h2>Error: El archivo {{filename} no cumple con el formato CSV}</h2>
     </div>
 
-    <div class="row row-content">
-        <div class="col-12">
-            <h2>Resultados</h2>
-            <h4>Número de reglas: <b>{{size}}</b></h4>
-        </div>
-      
-            
-     
-    </div>
-        
-    
+
     
 {% endblock %}
 
