@@ -1,51 +1,38 @@
 # Importamos las bibliotecas necesarias 
 import os
+import base64
+from io import BytesIO
 import pandas as pd                 # Para la manipulación y análisis de los datos
 import numpy as np                  # Para crear vectores y matrices n dimensionales
 import matplotlib.pyplot as plt     # Para la generación de gráficas a partir de los datos
 from crypt import methods           # Para subir archivos con métodos POST
-from flask import Flask, render_template,request,redirect,url_for,send_from_directory # Para utilizar flask
+from flask import Flask, redirect, render_template,request,Response, url_for# Para utilizar flask
 from werkzeug.utils import secure_filename # Para el manejo de nombre de archivos
 from apyori import apriori as ap
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from matplotlib.backends.backend_svg import FigureCanvasSVG
+from scipy.spatial.distance import cdist    # Para el cálculo de distancias
+from scipy.spatial import distance
+from flask_wtf import FlaskForm
+from wtforms import Form, IntegerField,SelectField,SubmitField, FileField
+
 # ---------------------------- { AQUÍ COMIENZA LA PARTE DE FLASK } ----------------------------
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "./uploads"
+#app.config['UPLOAD_FOLDER'] = "/static/csv"
+
+
+# --- { Forms } ---
+class raForm(FlaskForm):
+    ra_file = FileField()
 
 
 ALLOWED_EXTENSIONS = set(['csv'])
 
 # --- { REGLAS DE ASOCIACIÓN } ---
 
-@app.route('/reglas_asociacion/error',methods=['GET','POST'])
-def error_parametros():
-    return "Error en los parametros"
 
-@app.route('/reglas_asociacion/resultados',methods=['GET','POST'])
-def apriori():
-    if request.method == 'POST':
-        #filename = request.form['filename']
-        soporte = request.form['soporte']
-        confianza = request.form['confianza']
-        elevacion = request.form['elevacion']
-
-        
-
-        
-        
-        return render_template('reglas_asociacion_resultados.html',soporte = soporte, confianza = confianza, elevacion = elevacion)
-    else:
-        filename = request.args.get('filename')
-        
-            
-            
-       
-        
-        return render_template('reglas_asociacion_parametros.html',filename = filename,soporte = 0, confianza = 0, elevacion = 0)
-
-
-
-@app.route('/reglas_asociacion',methods=['GET', 'POST'])
-def reglas_asociacion():
+@app.route('/reglas_asociacion/parametros',methods=['GET', 'POST'])
+def ra_upload():
     if request.method == 'POST':
         #Importamos los datos
         ra_file = request.files["ra_csvfile"]
@@ -57,9 +44,8 @@ def reglas_asociacion():
         file = filename.split('.')
         
         if file[1] in ALLOWED_EXTENSIONS:
-            #ra_file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-
-            # Leemos los datos
+            #ra_file.save(os.path.join(app.static_folder,filename))
+             # Leemos los datos
             df = pd.read_csv(ra_file,header=None)
 
             #Se incluyen todas las transacciones en una sola lista
@@ -74,6 +60,7 @@ def reglas_asociacion():
             Lista['Porcentaje'] = (Lista['Frecuencia'] / Lista['Frecuencia'].sum()) #Porcentaje
             Lista = Lista.rename(columns={0 : 'Item'})
             
+
             #Se crea una lista de listas a partir del dataframe y se remueven los 'NaN'
             #level=0 especifica desde el primer índice
             TransaccionesLista = df.stack().groupby(level=0).apply(list).tolist()
@@ -82,38 +69,25 @@ def reglas_asociacion():
             confianza = request.form['confianza']
             elevacion = request.form['elevacion']
 
-
             Reglas = ap(TransaccionesLista,
                     min_support = float(soporte),
                     min_confidence = float(confianza),
                     min_lift = float(elevacion))
 
             Resultados = list(Reglas)
+            return render_template('reglas_asociacion_resultados.html',Resultados = Resultados,soporte = soporte, confianza = confianza, elevacion = elevacion, size = len(Resultados))
             
-            for item in Resultados:
-                #El primer índice de la lista
-                Emparejar = item[0]
-                items = [x for x in Emparejar]
-                print("Regla: " + str(item[0]))
-
-                #El segundo índice de la lista
-                print("Soporte: " + str(item[1]))
-
-                #El tercer índice de la lista
-                print("Confianza: " + str(item[2][0][2]))
-                print("Lift: " + str(item[2][0][3])) 
-                
-
-            return render_template('reglas_asociacion_resultados.html',soporte = soporte, confianza = confianza, elevacion = elevacion, size = len(Resultados))
-            #return redirect(url_for('apriori', soporte = soporte, filename = filename))
-
-        else:
-            return render_template('reglas_asociacion_error_archivo.html',filename = filename)   
-            
+           
+     
     else:
         
-        return render_template('reglas_asociacion.html')
-    
+        return render_template('reglas_asociacion_parametros.html')
+
+
+@app.route('/reglas_asociacion',)
+def ra():
+    return render_template('reglas_asociacion.html')
+
 
 
 # Ruta por defecto de la página

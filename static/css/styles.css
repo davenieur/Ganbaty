@@ -21,7 +21,7 @@
     padding:50px 30px 20px 30px;
     margin: 20px auto;
     background: #28b78d ;
-    color:#243743;
+    color: black;
 }
 
 .breadcrumb{
@@ -63,7 +63,7 @@ table-striped{
 }
 
 b{
-    color: #243743;
+    color: #28b78d;
 }
 
 .submit{
@@ -87,9 +87,19 @@ label {
 	cursor: pointer; /* "hand" cursor */
 }
 
-.card-title{
-    color: #243743;
+.card{
+    background-color: #243743;
+    color: white;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 0px;
 }
+
+.card-header{
+    background-color:black;
+    color: white;
+} 
+    
 
 a {
     outline: none;
@@ -99,13 +109,120 @@ a {
     color: #243743;
   }
   
+.listaHorizontal{
+    display:inline;
+    padding-left:3px;
+    padding-right:3px;
+}
+  
+ /* Este es nuestro diseño para los campos no válidos */
+input:invalid{
+    border-color: #900;
+    background-color: white;
+  }
 
-  
- 
-  
+  input:valid{
+    border-color: rgba(0, 59, 15, 0.575);
+    background-color: rgb(0, 153, 38);;
+  }
 
-  
   a:active {
     background: black;
     color: white;
   }
+
+  input[type=number]{
+    -webkit-appearance: none;
+    appearance: none;
+  
+    width: 50%;
+    border: 1px solid #737373;
+    margin: 0;
+  
+    font-family: inherit;
+    font-size: 100%;
+  
+    box-sizing: border-box;
+  }
+
+  input[type=file]::file-selector-button {
+    border: 2px solid #243743;
+    color: white;
+    padding: .2em .4em;
+    margin: .3em .4em;
+    background-color: #28b78d;
+    transition: 1s;
+    font-family: 'Secular One', sans-serif;
+    cursor: pointer;
+  }
+
+  h1{
+    color: white;
+    text-transform:uppercase 
+  }
+
+  h2{
+    color: #243743; 
+    font-family: 'Secular One', sans-serif;
+    text-transform:uppercase
+  }
+
+  h3{
+    color: #737373;
+    text-transform:uppercase  
+  }
+
+  h4{
+      font-size: medium;
+      text-transform:uppercase
+      
+  }
+.row-content{
+    margin: 10px;
+    padding: 10px;
+    
+}
+
+.btn{
+    background-color: #28b78d;
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+
+p{
+    font-family: 'Secular One', sans-serif;
+    
+}
+
+label{
+    font-family: 'Secular One', sans-serif;
+    margin-bottom: 10px;
+    font-size: medium;
+    text-align: center;
+}
+
+.col-form-label{
+    font-family: 'Secular One', sans-serif;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    color: #28b78d;
+    
+}
+
+
+#mediciones{
+    margin-top: 20px;
+    margin-bottom:  20px;
+
+}
+
+.btn{
+    font-family: 'Secular One', sans-serif;
+}
+
+.row{
+    margin-top: 20px;
+    margin-bottom:  20px;
+    border-color: #737373;
+}

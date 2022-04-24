@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row row-header">
                 <div class="col-12 col-sm-6">
-                    <h1>Reglas de asociación</h1>
+                    <h1>REGLAS DE ASOCIACIÓN</h1>
                     <p>Una herramienta de IA diseñada por David Perales Rodríguez para la asignatura de Inteligencia Artificial de la Facultad de Ingeniería en la UNAM</p>
                 </div>
                 <div class="col-12 col-sm">
@@ -44,30 +44,55 @@
       
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active">Reglas de asociación</li>
+            <li class="breadcrumb-item"> <a href="/reglas_asociacion"> Reglas de asociación</a> </li>
+            <li class="breadcrumb-item active">Resultados</li>
         </ol>
     </div>
    
    
 
-    <div class="row row-content">
-        <div class="col-12">
-            <h2>Parametros elegidos</h2>
-            <h4>Soporte: {{soporte}}</h4>
-            <h4>Confianza: {{confianza}}</h4>
-            <h4>Elevación: {{elevacion}}</h4>
-        </div>
-    </div>
+    
 
-    <div class="row row-content">
-        <div class="col-12">
-            <h2>Resultados</h2>
-            <h4>Número de reglas: <b>{{size}}</b></h4>
-        </div>
+    <div class="row">
+        <h2>RESULTADOS</h2>
+        <h3>Número de reglas: {{size}}</h3>
+        <h3>Soporte: {{soporte}}</h3>
+        <h3>Confianza: {{confianza}}</h3>
+        <h3>Elevación: {{elevacion}}</h3>
+        
+            
       
             
+        
      
-    </div>
+        
+        <!-- For loop logic of jinja template -->
+        {%for item in Resultados%}
+            
+            <div class="card col-sm-3">
+                <h3 class="card-header"> <b>Regla: {{loop.index}}</b> </h3>
+                <div class="card-body">
+                    
+                    <h4> <b>Items:</b>  </h4>
+                    {%for x in item[0]%}
+                        <li id = "reglas">
+                            {{x}}
+                        </li>
+                    {%endfor%}
+                    
+                    <h4><b>Soporte:</b></h4>  {{item[1]}}
+                    
+                    <h4><b>Confianza:</b></h4> {{item[2][0][2]}} 
+
+                    <h4><b>Elevación:</b></h4>  {{item[2][0][3]}}
+
+                </div>
+                
+            </div>
+        {%endfor%}
+        
+    </div>   
+ 
         
     
     
