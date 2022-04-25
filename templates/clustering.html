@@ -1,0 +1,110 @@
+{% extends './base.html' %}
+
+{% block title%}GANBATY: Clustering{% endblock%}
+
+{% block navbar%}
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Herramientas
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia">Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/clustering">Clustering</a></li>
+            
+        </ul>
+    </li>
+{% endblock%}
+
+{% block jumbotron%}
+    <header class="jumbotron">
+        <div class="container-fluid">
+            <div class="row row-header">
+                <div class="col-12">
+                    <h1>Clustering</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock%}
+
+
+
+
+
+{% block body %}
+   
+    <div class="row">
+      
+        <ol class="col-12 breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Clustering</li>
+        </ol>
+    </div>
+
+    
+    <div class="row">
+        <div class="col-12 flex-column">
+            <h2>¿Qué es el clustering?</h2>
+            <div class="card">
+                <h3 class="card-header"> Definición </h3>
+                <div class="card-body">
+                    <p class="d-none d-sm-block"> Consiste en la segmentación y delimitación de grupos
+                        de objetos (elementos), que son unidos por características comunes que éstos comparten
+                        <b>(aprendizaje no supervisado)</b>.</p>
+                </div>
+            </div>
+        </div> 
+    </div> 
+    <div class="row">
+        <div class="col-12 flex-column">
+            <h2>¿Dónde se usa el clustering?</h2>
+            <div class="card">
+                <h3 class="card-header"> Aprendizaje basado en instancias </h3>
+                <div class="card-body">
+                    <p class="d-none d-sm-block">Son muchas las aplicaciones actuales que se basan en la obtención de características similares entre vectores de datos <b>(objetos)</b></p>
+                    <ul>
+                        <li>Clasificaciones o reconocimiento de imágenes.</li>
+                        <li>Reconocimiento facial.</li>
+                        <li>Sistemas de recomendación.</li>
+                        <li>Recuperación de información.</li>
+                        <li>Agrupamiento de elementos.</li>
+                        <li>Marketing dirigido.</li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div> 
+    </div>
+    <div class="row">
+        <div class="col-12 flex-column">
+            <h2>Medidas de distancia destacadas</h2>
+            <div class="card">
+                <h3 class="card-header"> Sistemas de recomendaciones </h3>
+                <div class="card-body">
+                    <ul>
+                        <li>Distancia Euclidiana (Euclídea).</li>
+                        <li>Distancia de Chebyshev.</li>
+                        <li>Distancia de Manhattan (Geometría del taxista).</li>
+                        <li>Distancia de Minkowsky.</li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div> 
+    </div>
+
+    <div class="row">
+        <a class="btn" href="/metricas_distancia/parametros"> Calcular las métricas de distancia</a>
+    </div>
+    
+
+    
+
+    
+{% endblock %}
+
+

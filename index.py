@@ -13,24 +13,52 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.backends.backend_svg import FigureCanvasSVG
 from scipy.spatial.distance import cdist    # Para el cálculo de distancias
 from scipy.spatial import distance
-from flask_wtf import FlaskForm
-from wtforms import Form, IntegerField,SelectField,SubmitField, FileField
+from sklearn.preprocessing import StandardScaler, MinMaxScaler  
 
 # ---------------------------- { AQUÍ COMIENZA LA PARTE DE FLASK } ----------------------------
 app = Flask(__name__)
 #app.config['UPLOAD_FOLDER'] = "/static/csv"
 
-
-# --- { Forms } ---
-class raForm(FlaskForm):
-    ra_file = FileField()
-
-
 ALLOWED_EXTENSIONS = set(['csv'])
 
+
+# --- { METRICAS DE DISTANCIA } ---
+@app.route('/metricas_distancia/parametros',methods=['GET', 'POST'])
+def md_upload():
+    if request.method == 'POST':
+        #Importamos los datos
+        md_file = request.files["md_csvfile"]
+
+        # Obtenemos el nombre del archivo
+        filename = secure_filename(md_file.filename)
+
+        # Separamos el nombre del archivo
+        file = filename.split('.')
+        
+        if file[1] in ALLOWED_EXTENSIONS:
+            df = pd.read_csv(md_file)
+            estandarizar = StandardScaler()                         # Se instancia el objeto StandardScaler o MinMaxScaler 
+            MEstandarizada = estandarizar.fit_transform(df)         # Se calculan la media y desviación y se escalan los datos
+            
+            DstEuclidiana = cdist(MEstandarizada, MEstandarizada, metric='euclidean')
+            MEuclidiana = pd.DataFrame(DstEuclidiana)
+            
+            DstChebyshev = cdist(MEstandarizada, MEstandarizada, metric='chebyshev')
+            MChebyshev = pd.DataFrame(DstChebyshev)
+            
+            DstManhattan = cdist(MEstandarizada, MEstandarizada, metric='cityblock')
+            MManhattan = pd.DataFrame(DstManhattan)
+
+            DstMinkowski = cdist(MEstandarizada, MEstandarizada, metric='minkowski', p=1.5)
+            MMinkowski = pd.DataFrame(DstMinkowski)
+            
+            
+            return render_template('metricas_distancia_resultados.html',tables=[ MEuclidiana.to_html(classes='data')], titles=MEuclidiana.columns.values)
+    else:
+        
+        return render_template('metricas_distancia_parametros.html')
+
 # --- { REGLAS DE ASOCIACIÓN } ---
-
-
 @app.route('/reglas_asociacion/parametros',methods=['GET', 'POST'])
 def ra_upload():
     if request.method == 'POST':
@@ -70,32 +98,38 @@ def ra_upload():
             elevacion = request.form['elevacion']
 
             Reglas = ap(TransaccionesLista,
-                    min_support = float(soporte),
-                    min_confidence = float(confianza),
+                    min_support = float(soporte)/100,
+                    min_confidence = float(confianza)/100,
                     min_lift = float(elevacion))
 
             Resultados = list(Reglas)
-            return render_template('reglas_asociacion_resultados.html',Resultados = Resultados,soporte = soporte, confianza = confianza, elevacion = elevacion, size = len(Resultados))
             
-           
-     
+            return render_template('reglas_asociacion_resultados.html',Resultados = Resultados,soporte = soporte, confianza = confianza, elevacion = elevacion, size = len(Resultados))
     else:
         
         return render_template('reglas_asociacion_parametros.html')
 
 
-@app.route('/reglas_asociacion',)
+
+
+# --- { Redireccionando } ---
+@app.route('/clustering')
+def clustering():
+    return render_template('clustering.html')
+
+@app.route('/reglas_asociacion')
 def ra():
     return render_template('reglas_asociacion.html')
 
+@app.route('/metricas_distancia')
+def md():
+    return render_template('metricas_distancia.html')
 
-
-# Ruta por defecto de la página
 @app.route('/')
 def home():
     return render_template('index.html')
 
-
+# --- { Main } ---
 if __name__ == '_main_':
     
     app.run(host='0.0.0.0', port=80)

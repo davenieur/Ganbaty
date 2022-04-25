@@ -12,6 +12,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia">Métricas de distancia</a></li>
             <li><a class="dropdown-item" href="#">Clustering</a></li>
             
         </ul>
@@ -24,9 +25,6 @@
             <div class="row">
                 <div class="col-12 col-sm-6">
                     <h1>Reglas de asociación</h1>
-                    <p>Una herramienta de IA diseñada por David Perales Rodríguez para la asignatura de Inteligencia Artificial de la Facultad de Ingeniería en la UNAM</p>
-                </div>
-                <div class="col-12 col-sm">
                 </div>
             </div>
         </div>
@@ -43,7 +41,8 @@
       
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active">Reglas de asociación</li>
+            <li class="breadcrumb-item"><a href="/reglas_asociacion">Reglas de asociación</a></li>
+            <li class="breadcrumb-item active">Parámetros</li>
         </ol>
     </div>
 
@@ -72,11 +71,10 @@
                 <h3 class="card-header"> SOPORTE </h3>
                 <div class="card-body">
                     <p class="d-none d-sm-block"> Indica cuan importante es una regla dentro del total de transacciones.</p>
-                    
                 </div>
-                <div class="card-footer text-muted">
-                    <label class="col-form-label" for="soporte">Soporte mínimo</label>
-                    <input type="number"  name="soporte" min="0" max="1" required>
+                <div class="card-footer">
+                    <label class="col-form-label" for="soporte">Soporte mínimo %</label>
+                    <input type="number"  name="soporte" min="0" max="100" required title="El soporte mínimo es de 0 y máximo de 100">
                 </div>
             </div>
             <div class="card col-sm-4 col-4">
@@ -85,9 +83,9 @@
                     <p class="d-none d-sm-block"> Indica que tan fiable es una regla.</p>
                     
                 </div>
-                <div class="card-footer text-muted">
-                    <label class="col-form-label" for="confianza">Confianza mínima</label>
-                    <input type="number"  name="confianza"  min="0" max="1"  required>
+                <div class="card-footer">
+                    <label class="col-form-label" for="confianza">Confianza mínima %</label>
+                    <input type="number"  name="confianza"  min="0" max="100"  required title="La confianza mínima es de 0 y máxima de 100">
                 </div>
             </div>
             <div class="card col-sm-4 col-4">
@@ -96,9 +94,9 @@
                     <p class="d-none d-sm-block"> Indica cuan importante es una regla dentro del total de transacciones.</p>
                     
                 </div>
-                <div class="card-footer text-muted">
+                <div class="card-footer">
                     <label class="col-form-label" for="elevacion">Elevación</label>
-                    <input type="number" name="elevacion"  min="0" required>
+                    <input type="number" name="elevacion"  min="0" required title="La elevación mínima es de 0. Mayor a 1 (recomendable)">
                 </div>
             </div>
 

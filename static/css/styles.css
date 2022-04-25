@@ -22,6 +22,7 @@
     margin: 20px auto;
     background: #28b78d ;
     color: black;
+    font-size: large;
 }
 
 .breadcrumb{
@@ -39,36 +40,13 @@ body{
     background-color: #000000;
 }
 
-table {
-    font-family: arial, sans-serif;
-    font-size:medium;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-td, th {
-    border: 3px solid #737373;
-    text-align:center;
-    padding: 4px;
-}
-
-thead{
-    background: black;
-    color: white;
-    
-}
-
-table-striped{
-    background: #243743;
-}
-
 b{
     color: #28b78d;
 }
 
 .submit{
     background-color: #28b78d;
-    cursor: pointer; /* "hand" cursor */
+    cursor: pointer;
 
 }
 
@@ -84,7 +62,7 @@ label {
   }
 
   #ra_csvfile + label {
-	cursor: pointer; /* "hand" cursor */
+	cursor: pointer; 
 }
 
 .card{
@@ -115,15 +93,15 @@ a {
     padding-right:3px;
 }
   
- /* Este es nuestro diseño para los campos no válidos */
+
 input:invalid{
     border-color: #900;
-    background-color: white;
+    background-color: #b72853;
   }
 
   input:valid{
-    border-color: rgba(0, 59, 15, 0.575);
-    background-color: rgb(0, 153, 38);;
+    border-color: black;
+    background-color: #28b78d;
   }
 
   a:active {
@@ -150,7 +128,7 @@ input:invalid{
     color: white;
     padding: .2em .4em;
     margin: .3em .4em;
-    background-color: #28b78d;
+    background-color: #737373;
     transition: 1s;
     font-family: 'Secular One', sans-serif;
     cursor: pointer;
@@ -206,7 +184,7 @@ label{
     font-family: 'Secular One', sans-serif;
     margin-bottom: 10px;
     margin-left: 0px;
-    color: #28b78d;
+    color: white
     
 }
 
@@ -226,3 +204,20 @@ label{
     margin-bottom:  20px;
     border-color: #737373;
 }
+
+table.dataframe, .dataframe th, .dataframe td {
+    
+    border-bottom: 1px solid #243743; 
+    border-left: 1px solid #243743; 
+    text-align:center;
+    padding: 10px;
+    margin-bottom: 40px;
+    font-size: 0.9em;
+  }
+  
+  thead{
+    background: black;
+    color: white;
+    
+}
+

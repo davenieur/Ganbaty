@@ -1,0 +1,84 @@
+{% extends './base.html' %}
+
+{% block title%}GANBATY: Métricas de distancia{% endblock%}
+
+{% block navbar%}
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Herramientas
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia">Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/clustering">Clustering</a></li>
+            
+        </ul>
+    </li>
+{% endblock%}
+
+{% block jumbotron%}
+    <header class="jumbotron">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <h1>Métricas de distancia</h1>
+                </div>
+               
+            </div>
+        </div>
+    </header>
+{% endblock%}
+
+
+
+
+
+{% block body %}
+   
+    <div class="row">
+      
+        <ol class="col-12 breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item active">Métricas de distancia</li>
+        </ol>
+    </div>
+
+    
+    
+
+    <div class="row">
+        <div class="col-12 ">
+            <h2>Importando archivos</h2>
+            <form class = "needs-validation" novalidate action="/metricas_distancia/parametros" method="POST" enctype="multipart/form-data">
+                <div class="card col-12">
+                    <h3 class="card-header"> IMPORTA TU ARCHIVO CSV </h3>
+                    <div class="card-body">
+                        
+                        <div class="form-group" >
+                            <input type = "file" id="md_csvfile" name="md_csvfile" accept=".csv" required/>
+                        </div>
+                  
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="form-group col-12">
+                <input type = "submit" id="submit" hidden>
+                <label class="submit"for="submit">Obtener matrices de distancias</label>
+            </div>
+      
+
+        </form>
+            
+            
+     
+    </div>    
+
+    
+{% endblock %}
+
+
