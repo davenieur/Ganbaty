@@ -25,11 +25,6 @@
     font-size: large;
 }
 
-.breadcrumb{
-    color: #243743;
-    font-size: medium;
-}
-
 body{
     padding:50px 0px 0px 0px;
     z-index:0;
@@ -47,7 +42,7 @@ b{
 .submit{
     background-color: #28b78d;
     cursor: pointer;
-
+    text-transform:uppercase;
 }
 
 label {
@@ -66,15 +61,15 @@ label {
 }
 
 .card{
-    background-color: #243743;
+    background-color: black;
     color: white;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding: 0px;
 }
 
 .card-header{
-    background-color:black;
+    background-color:#243743;
     color: white;
 } 
     
@@ -84,7 +79,7 @@ a {
     text-decoration: none;
     padding: 2px 1px;
     
-    color: #243743;
+    color:#28b78d;
   }
   
 .listaHorizontal{
@@ -141,7 +136,7 @@ input:invalid{
 
   h2{
     color: #243743; 
-    font-family: 'Secular One', sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
     text-transform:uppercase
   }
 
@@ -165,11 +160,13 @@ input:invalid{
     background-color: #28b78d;
     margin-bottom: 10px;
     color: #000000;
+    text-transform:uppercase;
 }
 
 
 p{
-    font-family: 'Secular One', sans-serif;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-size: large;
     
 }
 
@@ -221,3 +218,8 @@ table.dataframe, .dataframe th, .dataframe td {
     
 }
 
+.descriptores{
+    text-align: center;
+    align-content: center;
+    align-self: center;
+}

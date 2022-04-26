@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 col-sm-6">
-                    <h1>Métricas de distancia</h1>
+                    <h1>Clustering</h1>
                 </div>
                
             </div>
@@ -42,41 +42,56 @@
       
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active">Métricas de distancia</li>
+            <li class="breadcrumb-item"><a href="/clustering">Clustering</a></li>
+            <li class="breadcrumb-item active">Parámetros</li>
         </ol>
     </div>
-
-    
-    
 
     <div class="row">
         <div class="col-12 ">
             <h2>Importando archivos</h2>
-            <form class = "needs-validation" novalidate action="/metricas_distancia/parametros" method="POST" enctype="multipart/form-data">
-                <div class="card">
+            <form class = "needs-validation" novalidate action="/clustering/parametros" method="POST" enctype="multipart/form-data">
+                <div class="card col-12">
                     <h3 class="card-header"> IMPORTA TU ARCHIVO CSV </h3>
                     <div class="card-body">
                         
                         <div class="form-group" >
-                            <input type = "file" id="md_csvfile" name="md_csvfile" accept=".csv" required/>
+                            <input type = "file" id="c_csvfile" name="c_csvfile" accept=".csv" required/>
                         </div>
                   
                     </div>
                 </div>
-                <div class="form-group col-12">
-                    <input type = "submit" id="submit" hidden>
-                    <label class="submit"for="submit">Obtener distancias</label>
-                </div>
-            </form> 
         </div>
     </div>
-    
+    <div class="row">
+            <h2>Parámetros para realizar el clustering:</h2>
+            <div class="card col-12">
+                <h3 class="card-header"> Clustering jerárquico </h3>
+                <div class="card-body">
+                    <p class="d-none d-sm-block"> Para este algoritmo es necesario establecer un número de clusters.</p>
+                </div>
+                <div class="card-footer">
+                    <label class="col-form-label" for="soporte">Número de clusters</label>
+                    <input type="number"  name="numclusters" min="0" max="12" required title="El número mínimo es de 0 y máximo de 12">
+                </div>
+            </div>
             
-       
+        
+
+            <div class="form-group col-12">
+                <input type = "submit" id="submit" hidden>
+                <label class="submit"for="submit">Obtener reglas</label>
+            </div>
+      
+
+        </form>
             
             
      
-        
+    </div>   
+    
+
+      
 
     
 {% endblock %}

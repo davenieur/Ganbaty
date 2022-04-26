@@ -51,25 +51,37 @@
    
 
     
-
+    
     <div class="row">
         <h2>Distancia Euclidiana</h2>
-        
-        
-            
-        
-        {% for table in tables %}
-            {{titles[loop.index]}}
+        {% for table in tablesE %}
+            {{titlesE[loop.index]}}
             {{ table|safe }}
-        {% endfor %}    
-        
-     
-        
-       
-        
+        {% endfor %}
     </div>   
     <div class="row">
-        <a class="btn" href="/reglas_asociacion/parametros"> Volver a calcular </a>
+        <h2>Distancia Chebyshev</h2>
+        {% for table in tablesC %}
+            {{titlesC[loop.index]}}
+            {{ table|safe }}
+        {% endfor %}    
+    </div> 
+    <div class="row">
+        <h2>Distancia Manhattan</h2>
+        {% for table in tablesMan %}
+            {{titlesMan[loop.index]}}
+            {{ table|safe }}
+        {% endfor %}     
+    </div> 
+    <div class="row">
+        <h2>Distancia Minkowsky</h2>
+        {% for table in tablesMin %}
+            {{titlesMin[loop.index]}}
+            {{ table|safe }}
+        {% endfor %}     
+    </div> 
+    <div class="row col-12">
+        <a class="btn" href="/metricas_distancia/parametros"> Volver a calcular </a>
     </div>
         
     

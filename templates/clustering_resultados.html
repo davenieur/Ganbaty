@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block title%}GANBATY: Métricas de distancia{% endblock%}
+{% block title%}GANBATY: Reglas de asociación{% endblock%}
 
 {% block navbar%}
     <li class="nav-item">
@@ -22,11 +22,11 @@
 {% block jumbotron%}
     <header class="jumbotron">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row row-header">
                 <div class="col-12 col-sm-6">
-                    <h1>Métricas de distancia</h1>
+                    <h1>Clustering</h1>
+                    
                 </div>
-               
             </div>
         </div>
     </header>
@@ -39,46 +39,46 @@
 {% block body %}
    
     <div class="row">
-      
+        
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active">Métricas de distancia</li>
+            <li class="breadcrumb-item"><a href="/clustering">Clustering</a></li>
+            <li class="breadcrumb-item"><a href="/clustering/parametros">Parámetros</a></li>
+            <li class="breadcrumb-item active">Resultados</li>
         </ol>
     </div>
+   
+   
 
     
     
+    <div class="row">
+        <h2>Clustering Jerárquico:</h2>
+        {% for table in tablesJ %}
+            {{titlesJ[loop.index]}}
+            {{ table|safe }}
+        {% endfor %}
+    </div>
+   
+
+
 
     <div class="row">
-        <div class="col-12 ">
-            <h2>Importando archivos</h2>
-            <form class = "needs-validation" novalidate action="/metricas_distancia/parametros" method="POST" enctype="multipart/form-data">
-                <div class="card">
-                    <h3 class="card-header"> IMPORTA TU ARCHIVO CSV </h3>
-                    <div class="card-body">
-                        
-                        <div class="form-group" >
-                            <input type = "file" id="md_csvfile" name="md_csvfile" accept=".csv" required/>
-                        </div>
-                  
-                    </div>
-                </div>
-                <div class="form-group col-12">
-                    <input type = "submit" id="submit" hidden>
-                    <label class="submit"for="submit">Obtener distancias</label>
-                </div>
-            </form> 
-        </div>
-    </div>
+        <h2>Clustering Particional:</h2>
+        {% for table in tablesP %}
+            {{titlesP[loop.index]}}
+            {{ table|safe }}
+        {% endfor %}
+    </div>  
     
-            
-       
-            
-            
-     
+    <div class="row col-12">
+        <a class="btn" href="/clustering/parametros"> Volver a calcular </a>
+    </div>
         
-
+    
     
 {% endblock %}
+
+
 
 

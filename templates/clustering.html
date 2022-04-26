@@ -60,12 +60,13 @@
         </div> 
     </div> 
     <div class="row">
-        <div class="col-12 flex-column">
+        <div class="flex-column">
             <h2>¿Dónde se usa el clustering?</h2>
             <div class="card">
                 <h3 class="card-header"> Aprendizaje basado en instancias </h3>
                 <div class="card-body">
                     <p class="d-none d-sm-block">Son muchas las aplicaciones actuales que se basan en la obtención de características similares entre vectores de datos <b>(objetos)</b></p>
+                
                     <ul>
                         <li>Clasificaciones o reconocimiento de imágenes.</li>
                         <li>Reconocimiento facial.</li>
@@ -81,27 +82,50 @@
     </div>
     <div class="row">
         <div class="col-12 flex-column">
-            <h2>Medidas de distancia destacadas</h2>
+            <h2>Algunos tipos de clustering</h2>
             <div class="card">
-                <h3 class="card-header"> Sistemas de recomendaciones </h3>
+                <h3 class="card-header"> Jerárquico </h3>
                 <div class="card-body">
+                    <p class="d-none d-sm-block">Organiza los elementos, de manera recursiva, en una
+                        estructura en forma de <b data-toggle="tooltip" title="Estructura de datos compuesta de nodos, vértices y aristas que es acíclica"> <a target="_blank" href="https://es.wikipedia.org/wiki/%C3%81rbol_(inform%C3%A1tica)#/media/Archivo:Binary_tree.svg">árbol</a></b>.
+                        Este árbol representa las relaciones de similitud entre los distintos elementos.
+                    </p>
+                    <h3 style="color: #28b78d">Pros</h3>
                     <ul>
-                        <li>Distancia Euclidiana (Euclídea).</li>
-                        <li>Distancia de Chebyshev.</li>
-                        <li>Distancia de Manhattan (Geometría del taxista).</li>
-                        <li>Distancia de Minkowsky.</li>
+                        <li>Facilidad de manejo de los objetos.</li>
+                        <li>No se asume un número particular de grupos.</li>
+                        
+                    </ul>
+                    <h3 style="color: #28b78d">Contras</h3>
+                    <ul>
+                        <li>Una vez que se toma la decisión de combinar dos
+                            grupos, no se puede regresar atrás.</li>
+                        <li>Lento para grandes conjuntos de datos.</li>
+                        
                     </ul>
                 </div>
             </div>
-            
+            <div class="card">
+                <h3 class="card-header"> Particional (K Means) </h3>
+                <div class="card-body">
+                    <p class="d-none d-sm-block">Conocido también como de particiones, organiza los elementos dentro
+                        de k clústeres. Tiene ventajas en aplicaciones que involucran gran cantidad de datos.
+                    </p>
+                    <h3 style="color: #28b78d">Pros</h3>
+                    <ul>
+                        <li>Tiene ventajas en aplicaciones que involucran gran cantidad de datos.</li>
+                        <li>Resuelve problemas de optimización, dado que la función es minimizar
+                            (optimizar) la suma de las distancias de cada elemento al centroide de un clúster.</li>
+                    </ul>
+                </div>
+            </div>
         </div> 
     </div>
 
     <div class="row">
-        <a class="btn" href="/metricas_distancia/parametros"> Calcular las métricas de distancia</a>
+        <a class="btn" href="/clustering/parametros"> Realizar clustering</a>
     </div>
-    
-
+   
     
 
     
