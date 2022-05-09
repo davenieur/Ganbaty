@@ -9,6 +9,7 @@
     <!-- Bootstrap & CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">
+    <link type="text/css" href="@@path/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 <body d-flex flex-column>
     <!-- Navbar -->
@@ -53,7 +54,9 @@
         <div class="container py-5">
             <div class="row py-4">
                 <div class="col-6 mb-4 mb-lg-0"><a href="/"><img src="{{url_for('static',filename='img/logo.png')}}" alt="" width="128" class="mb-3"></a>
-                    <p class="font-italic">Proyecto para la asignatura de inteligencia artificial con el fin de crear una herramienta que emplea algoritmos de Machine Learning como reglas de asociación, métricas de distancia, clustering particional o jerárquico.</p>
+                    <p class="font-italic">Proyecto para la asignatura de inteligencia artificial con el fin de crear una 
+                        herramienta que emplea algoritmos de Machine Learning como reglas de asociación, métricas de distancia, 
+                        clustering particional o jerárquico, regresión logística, árboles de decisión y bosques aleatorios.</p>
                 </div>
                 <div class="col-6 col-md-6 mb-4 mb-lg-0">
                     <h6 class="text-uppercase font-weight-bold mb-4">Herramientas</h6>
@@ -61,6 +64,9 @@
                         <li class="mb-2"><a href="/reglas_asociacion">Reglas de asociación</a></li>
                         <li class="mb-2"><a href="/metricas_distancia">Métricas de distancia</a></li>
                         <li class="mb-2"><a href="/clustering">Clustering</a></li>
+                        <li class="mb-2"><a href="/regresion_logistica">Regresión logística</a></li>
+                        <li class="mb-2"><a href="/arboles_decision">Árboles de decisión</a></li>
+                        <li class="mb-2"><a href="/bosques_aleatorios">Bosques aleatorios</a></li>
                     </ul>
                 </div>
             </div>
@@ -77,7 +83,9 @@
     <!-- Popper.js & Bootstrap JS. -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-    <script src="{{url_for('static',filename='js/scripts.js')}}"
-    
+    <script src="@@path/vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="{{url_for('static',filename='js/scripts.js')}}"></script>
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>></script>
 </body>
 </html>

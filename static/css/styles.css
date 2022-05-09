@@ -60,19 +60,7 @@ label {
 	cursor: pointer; 
 }
 
-.card{
-    background-color: black;
-    color: white;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 0px;
-}
 
-.card-header{
-    background-color:#243743;
-    color: white;
-} 
-    
 
 a {
     outline: none;
@@ -150,6 +138,13 @@ input:invalid{
       text-transform:uppercase
       
   }
+
+  h5{
+    color: #28b78d;
+    font-size:larger;
+  }
+
+  
 .row-content{
     margin: 10px;
     padding: 10px;
@@ -222,4 +217,44 @@ table.dataframe, .dataframe th, .dataframe td {
     text-align: center;
     align-content: center;
     align-self: center;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #FFF  ;
+    background-color: #243743 ;
+  }
+  
+  
+  
+  .accordion-button:link, .accordion-button:visited, .accordion-button:hover, .accordion-button:active  {
+    background-color: #28b78d ;
+    color:#FFF ;
+    text-decoration: none ;
+    border: hidden ;
+
+    box-shadow: 0px ;
+
+        
+  }
+  
+  .accordion-button:focus {
+    z-index: 3;
+    border-color: #FFF ;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem #737373 ;
+    margin-bottom: 0px;
+  }
+
+.accordion-body{
+    background-color: black ;
+    color: white;
+    margin-top: 0px;
+}
+
+.accordeon-header{
+    margin-bottom: 0px;
+}
+
+.accordeon-item{
+    border-color: #FFF ;
 }

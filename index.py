@@ -2,6 +2,7 @@
 import os
 import base64
 from io import BytesIO
+from webargs import flaskparser, fields
 import pandas as pd                 # Para la manipulación y análisis de los datos
 import numpy as np                  # Para crear vectores y matrices n dimensionales
 import matplotlib.pyplot as plt     # Para la generación de gráficas a partir de los datos
@@ -24,10 +25,16 @@ app = Flask(__name__)
 #app.config['UPLOAD_FOLDER'] = "/static/csv"
 
 ALLOWED_EXTENSIONS = set(['csv'])
+FORM_ARGS = {
+    'soporte': fields.Str(required=True),
+    'confianza': fields.Str(required=True),
+    'elevacion': fields.Str(required=True)
+}
+
+
 
 # --- { CLUSTERING } ---
 @app.route('/clustering/parametros',methods=['GET', 'POST'])
-
 def c_upload():
     if request.method == 'POST':
         #Importamos los datos
@@ -96,7 +103,6 @@ def c_upload():
     
 
 # --- { METRICAS DE DISTANCIA } ---
-
 @app.route('/metricas_distancia/parametros',methods=['GET', 'POST'])
 def md_upload():
     if request.method == 'POST':
@@ -163,7 +169,7 @@ def md_upload():
     
 
 # --- { REGLAS DE ASOCIACIÓN } ---
-@app.route('/reglas_asociacion/parametros',methods=['GET', 'POST'])
+@app.route('/reglas_asociacion/resultados',methods=['GET', 'POST'])
 def ra_upload():
     if request.method == 'POST':
         #Importamos los datos
@@ -211,7 +217,7 @@ def ra_upload():
             return render_template('reglas_asociacion_resultados.html',Resultados = Resultados,soporte = soporte, confianza = confianza, elevacion = elevacion, size = len(Resultados))
     else:
         
-        return render_template('reglas_asociacion_parametros.html')
+        return render_template('reglas_asociacion.html')
 
 
 

@@ -27,7 +27,9 @@
                 <div class="col-12">
                     <h1>GANBATY</h1>
                     
-                    <p>Es un proyecto para la asignatura de inteligencia artificial con el fin de crear una herramienta que emplea algoritmos de Machine Learning como reglas de asociación, métricas de distancia, clustering particional o jerárquico.</p>
+                    <p>Es un proyecto para la asignatura de inteligencia artificial con el fin de crear una herramienta que emplea algoritmos de Machine Learning como reglas de asociación, 
+                        métricas de distancia, clustering particional o jerárquico, regresión logística, árboles de decisión y bosques aleatorios.
+                    </p>
                 </div>
                 
             </div>
@@ -39,58 +41,137 @@
 
 
 {% block body %}
+    <button class="btn btn-primary" id="basicAlert">Basic alert</button>
    
+    <!-- Button Modal -->
+<button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-notification">Notification</button>
+<!-- Modal Content -->
+<div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+    <div class="modal-dialog modal-info modal-dialog-centered" role="document">
+        <div class="modal-content bg-gradient-secondary">
+            <div class="modal-header">
+                <p class="modal-title" id="modal-title-notification">A new experience, personalized for you.</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="py-3 text-center">
+                    <span class="modal-icon display-1-lg"><span class="far fa-envelope-open"></span></span>
+                    <h2 class="h4 modal-title my-3">Important message!</h2>
+                    <p>Do you know that you can assign status and relation to a company right in the visit list?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-white">Go to Inbox</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Modal Content -->
     <div class="row">
-
-        <ol class="col-12 breadcrumb">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item active"><a href="/">Inicio</a></li>
         </ol>
     </div>
-
+    
+   
     <div class="row">
-        <div class="col-12">
-            <h2>HERRAMIENTAS</h2>
-            <div class="card">
-                <h3 class="card-header"> REGLAS DE ASOCIACIÓN </h3>
-                
-                <div class="card-body">
-                    <p class="d-none d-sm-block"> Son usados por <b data-toggle="tooltip" title="Presentan distintos tipos de temas o ítems de información que son del interés de un usuario en particular."> <a target="_blank" href="https://www.grapheverywhere.com/sistemas-de-recomendacion-que-son-tipos-y-ejemplos/#:~:text=Un%20sistema%20de%20recomendaci%C3%B3n%20es,o%20valor%20para%20el%20usuario.">sistemas de recomendación</a></b>. Un sistema de recomendación incluye uno o más algoritmos de Inteligencia Artificial que buscan
-                        contenido (información) sobre una <b data-toggle="tooltip" title="En un análisis en tiempo real o de big data."> <a target="_blank" href="https://doc.arcgis.com/es/iot/ingest/what-is-a-data-source-.htm">fuente de datos</a></b>, ya sea de clientes o usuarios, para generar
-                        recomendaciones en función de los gustos o necesidades de la persona.</p>
-                    
-                        
-                    <a class="btn" href="/reglas_asociacion" role="button">Reglas de asociación</a>
-                    
-
+        <h2>HERRAMIENTAS</h2>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Reglas de asociación
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block"> Son usados por <b data-toggle="tooltip" title="Presentan distintos tipos de temas o ítems de información que son del interés de un usuario en particular."> <a target="_blank" href="https://www.grapheverywhere.com/sistemas-de-recomendacion-que-son-tipos-y-ejemplos/#:~:text=Un%20sistema%20de%20recomendaci%C3%B3n%20es,o%20valor%20para%20el%20usuario.">sistemas de recomendación</a></b>. Un sistema de recomendación incluye uno o más algoritmos de Inteligencia Artificial que buscan
+                            contenido (información) sobre una <b data-toggle="tooltip" title="En un análisis en tiempo real o de big data."> <a target="_blank" href="https://doc.arcgis.com/es/iot/ingest/what-is-a-data-source-.htm">fuente de datos</a></b>, ya sea de clientes o usuarios, para generar
+                            recomendaciones en función de los gustos o necesidades de la persona.</p>
+                        <a class="btn" href="/reglas_asociacion" role="button">Obtener reglas de asociación</a>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <h3 class="card-header"> MÉTRICAS DE DISTANCIA </h3>
-                <div class="card-body">
-                    <p class="d-none d-sm-block">Es una puntuación objetiva que resume la diferencia entre dos elementos
-                        (objetos), como: compras, ventas, diagnósticos, personas, usuarios, entre otros. Estas mediciones se utilizan para <b data-toggle="tooltip" title="Parte fundamental del Machine Learning."> <a target="_blank" href="https://www.bbva.com/es/machine-learning-que-es-y-como-funciona/">aprender de los datos</a></b>.</p>
-                    <a class="btn" href="/metricas_distancia" role="button">Métricas de distancia</a>
-                    
-
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Métricas de distancia
+                </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block">Es una puntuación objetiva que resume la diferencia entre dos elementos
+                            (objetos), como: compras, ventas, diagnósticos, personas, usuarios, entre otros. Estas mediciones se utilizan para <b data-toggle="tooltip" title="Parte fundamental del Machine Learning."> <a target="_blank" href="https://www.bbva.com/es/machine-learning-que-es-y-como-funciona/">aprender de los datos</a></b>.</p>
+                        <a class="btn" href="/metricas_distancia" role="button">Calcular métricas de distancia</a>
+                    </div>
                 </div>
             </div>
-            <div class="card">
-                <h3 class="card-header"> Clustering </h3>
-                <div class="card-body">
-                    <p class="d-none d-sm-block">Consiste en la segmentación y delimitación de grupos
-                        de objetos (elementos), que son unidos por características comunes que éstos comparten. Para hacer clustering es necesario saber el grado de similitud <b> <a target="_blank" href="/metricas_distancia"> (medidas de distancia)</a></b> entre los
-                        elementos.</p>
-                    <a class="btn" href="/clustering" role="button">Clustering</a>
-                    
-
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Clustering
+                </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block">Consiste en la segmentación y delimitación de grupos
+                            de objetos (elementos), que son unidos por características comunes que éstos comparten. Para hacer clustering es necesario saber el grado de similitud <b> <a target="_blank" href="/metricas_distancia"> (medidas de distancia)</a></b> entre los
+                            elementos.</p>
+                        <a class="btn" href="/clustering" role="button">Realizar clustering</a>
+                    </div>
                 </div>
             </div>
-            
-            
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    Regresión logística
+                </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block">
 
-            
+                        </p>
+                        <a class="btn" href="/regresion_logistica" role="button">Realizar una regresión logística</a>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    Árboles de decisión
+                </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block">
+
+                        </p>
+                        <a class="btn" href="/arboles_decision" role="button">Obtener un árbol de decisión</a>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSix">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                    Bosques aleatorios
+                </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block">
+
+                        </p>
+                        <a class="btn" href="/bosques_aleatorios" role="button">Obtener un bosque aleatorio</a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+        
+    </div> 
+     
+</div> 
+   
     
 {% endblock %}
 

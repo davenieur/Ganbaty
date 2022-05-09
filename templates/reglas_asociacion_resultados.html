@@ -42,7 +42,6 @@
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
             <li class="breadcrumb-item"><a href="/reglas_asociacion">Reglas de asociación</a></li>
-            <li class="breadcrumb-item"><a href="/reglas_asociacion/parametros">Parámetros</a></li>
             <li class="breadcrumb-item active">Resultados</li>
         </ol>
     </div>
@@ -90,9 +89,56 @@
         {%endfor%}
         
     </div>   
-    <div class="row">
-        <a class="btn" href="/reglas_asociacion/parametros"> Volver a calcular </a>
+    <!-- Button Modal -->
+    <button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form">Obtener reglas de asociación</button>
+    <!-- Modal Content -->
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card  p-3 p-lg-4">
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="card-header border-0 text-center pb-0">
+                            <h2 class="h4">Reglas de asociación</h2>
+                            <span>Introduce los parámetros</span>
+                        </div>
+                        <div class="card-body p-0 pl-lg-3">
+                            <form action="/reglas_asociacion/resultados" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <!-- Form -->
+                                    
+                                    <div class="form-group mb-4">
+                                        <label for="soporte">Soporte mínimo (%)</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" name="soporte" min="0" max="100" required title="El soporte mínimo es de 0 y máximo de 100">
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="confianza">Confianza (%)</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" name="confianza"  min="0" max="100"  required title="La confianza mínima es de 0 y máxima de 100">
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="elevacion">Elevación</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" name="elevacion"  min="0" required title="La elevación mínima es de 0. Mayor a 1 (recomendable)">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-dark">Obtener reglas de asociación</button>
+                                </div>
+                            </form>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- End of Modal Content -->
         
     
     
