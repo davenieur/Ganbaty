@@ -4,16 +4,19 @@
 
 {% block navbar%}
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+        <a class="nav-link" aria-current="page" href="/"><i class="fa-solid fa-house me-2"></i>Inicio</a>
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Herramientas
+            <i class="fa-solid fa-toolbox me-2"></i> Herramientas
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="/metricas_distancia">Métricas de distancia</a></li>
-            <li><a class="dropdown-item" href="/clustering">Clustering</a></li>
+            <li><a class="dropdown-item" href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia"> <i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/clustering"><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</a></li>
+            <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i>Regresión logística</a></li>
+            <li><a class="dropdown-item" href="/arboles_decision"><i class="fa-solid fa-tree ms-2 me-4"></i>Árboles de decisión</a></li> 
+            <li><a class="dropdown-item" href="/bosques_aleatorios"><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-3"></i>Bosques aleatorios</a></li>
             
         </ul>
     </li>
@@ -24,7 +27,7 @@
         <div class="container-fluid">
             <div class="row row-header">
                 <div class="col-12 col-sm-6">
-                    <h1>REGLAS DE ASOCIACIÓN</h1>
+                    <h1><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>REGLAS DE ASOCIACIÓN</h1>
                 </div>
             </div>
         </div>
@@ -40,54 +43,103 @@
     <div class="row">
         
         <ol class="col-12 breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="/reglas_asociacion">Reglas de asociación</a></li>
-            <li class="breadcrumb-item active">Resultados</li>
+            <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-2"></i></a></li>
+            <li class="breadcrumb-item"><a href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass me-2"></i>Reglas de asociación</a></li>
+           
+            <li class="breadcrumb-item active"><i class="fa-solid fa-bullhorn me-2"></i>Resultados</li>
         </ol>
     </div>
-   
-   
-
     
-
     <div class="row">
-        <h2>RESULTADOS</h2>
-        <h3>Número de reglas: {{size}}</h3>
-        <h3>Soporte: {{soporte}}</h3>
-        <h3>Confianza: {{confianza}}</h3>
-        <h3>Elevación: {{elevacion}}</h3>
-        
-            
+        <h2><i class="fa-solid fa-gear me-4"></i>PARÁMETROS</h2>
+    </div>    
       
-            
-        
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between border-bottom border-gray-300 pb-3">
+                        <div>
+                            <h6 class="mb-0">Archivo: <b>{{filename}}</b></h6>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-bottom border-gray-300 py-3">
+                        <div>
+                            <h6 class="mb-0">Número de reglas: <b>{{size}}</b></h6>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-bottom border-gray-300 py-3">
+                        <div>
+                            <h6 class="mb-0">Soporte: <b>{{soporte}}</b></h6>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-bottom border-gray-300 py-3">
+                        <div>
+                            <h6 class="mb-0">Confianza: <b>{{confianza}}</b> </h6>
+                        </div>
+                        
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-bottom border-gray-300 py-3">
+                        <div>
+                            <h6 class="mb-0">Elevación (lift): <b>{{elevacion}}</b></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    
+    <div class="row">
+        <h2><i class="fa-solid fa-bullhorn me-4"></i>RESULTADOS</h2>
+    </div>      
+
+    <div class="row"> 
      
         
         <!-- For loop logic of jinja template -->
         {%for item in Resultados%}
-            
-            <div class="card col-sm-3">
-                <h3 class="card-header"> <b>Regla: {{loop.index}}</b> </h3>
-                <div class="card-body">
-                    
-                    <h4> <b>Items:</b>  </h4>
-                    {%for x in item[0]%}
-                        <li id = "reglas">
-                            {{x}}
-                        </li>
-                    {%endfor%}
-                    
-                    <h4><b>Soporte:</b></h4>  {{item[1]}}
-                    
-                    <h4><b>Confianza:</b></h4> {{item[2][0][2]}} 
-
-                    <h4><b>Elevación:</b></h4>  {{item[2][0][3]}}
-
+            <div class="accordion col-3" id="accordionExample3">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{loop.index}}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{loop.index}}" aria-expanded="true" aria-controls="collapse{{loop.index}}">
+                            Regla: {{loop.index}}
+                        </button>
+                    </h2>
+                    <div id="collapse{{loop.index}}" class="accordion-collapse collapse" aria-labelledby="heading{{loop.index}}" data-bs-parent="#accordionExample3">
+                        <div class="accordion-body">
+                            <div class="resultados">
+                                <h4> <b>Items:</b>  </h4>
+                                <p>
+                                    {%for x in item[0]%}
+                                        <li >
+                                            {{x}}
+                                        </li>
+                                    {%endfor%}
+                                </p>
+                                
+                            </div>
+                            <div>
+                                <h4><b>Soporte:</b></h4>  
+                                <p>{{item[1]}}</p>
+                            
+                            </div>
+                            <div>
+                                <h4><b>Confianza:</b></h4> 
+                                <p>{{item[2][0][2]}} </p>
+                            </div>
+                            <div>
+                                <h4><b>Elevación:</b></h4>  
+                                <p>{{item[2][0][3]}} </p> 
+                            </div>
+         
+                        </div>
+                    </div>
                 </div>
-                
             </div>
+            
+            
         {%endfor%}
-        
+       
     </div>   
     <!-- Button Modal -->
     <button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form">Obtener reglas de asociación</button>
@@ -106,23 +158,30 @@
                             <form action="/reglas_asociacion/resultados" method="POST" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <!-- Form -->
-                                    
+                                    <div class="form-group mb-4">
+                                        <div class="input-group">
+                                            <div class="form-group" >
+                                                <label for="ra_csvfile">Archivo CSV</label>
+                                                <input type = "file" id="ra_csvfile" name="ra_csvfile" accept=".csv" required/>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group mb-4">
                                         <label for="soporte">Soporte mínimo (%)</label>
                                         <div class="input-group">
-                                            <input type="number" class="form-control" name="soporte" min="0" max="100" required title="El soporte mínimo es de 0 y máximo de 100">
+                                            <input type="number" class="form-control" name="soporte" min="0" max="100" step="any" required title="El soporte mínimo es de 0 y máximo de 100">
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
                                         <label for="confianza">Confianza (%)</label>
                                         <div class="input-group">
-                                            <input type="number" class="form-control" name="confianza"  min="0" max="100"  required title="La confianza mínima es de 0 y máxima de 100">
+                                            <input type="number" class="form-control" name="confianza"  min="0" max="100" step="any" required title="La confianza mínima es de 0 y máxima de 100">
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
                                         <label for="elevacion">Elevación</label>
                                         <div class="input-group">
-                                            <input type="number" class="form-control" name="elevacion"  min="0" required title="La elevación mínima es de 0. Mayor a 1 (recomendable)">
+                                            <input type="number" class="form-control" name="elevacion"  min="0" step="any" required title="La elevación mínima es de 0. Mayor a 1 (recomendable)">
                                         </div>
                                     </div>
                                 </div>

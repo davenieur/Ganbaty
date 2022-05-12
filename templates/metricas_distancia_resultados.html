@@ -4,16 +4,21 @@
 
 {% block navbar%}
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+        <a class="nav-link" aria-current="page" href="/"><i class="fa-solid fa-house me-2"></i>Inicio</a>
     </li>
+   
     <li class="nav-item dropdown">
+        
         <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Herramientas
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="/metricas_distancia">Métricas de distancia</a></li>
-            <li><a class="dropdown-item" href="/clustering">Clustering</a></li>
+            <li><a class="dropdown-item" href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia"> <i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/clustering"><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</a></li>
+            <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i> Regresión logística</a></li>
+            <li><a class="dropdown-item" href="/arboles_decision"><i class="fa-solid fa-tree ms-2 me-4"></i>Árboles de decisión</a></li> 
+            <li><a class="dropdown-item" href="/bosques_aleatorios"><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-3"></i>Bosques aleatorios</a></li>
             
         </ul>
     </li>
@@ -23,8 +28,9 @@
     <header class="jumbotron">
         <div class="container-fluid">
             <div class="row row-header">
+                
                 <div class="col-12 col-sm-6">
-                    <h1>Métricas de distancia</h1>
+                    <h1><i class="fa-solid fa-pen-ruler ms-2 me-4"></i>Métricas de distancia</h1>
                     
                 </div>
             </div>
@@ -41,48 +47,25 @@
     <div class="row">
         
         <ol class="col-12 breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="/metricas_distancia">Reglas de asociación</a></li>
-            <li class="breadcrumb-item"><a href="/metricas_distancia/parametros">Parámetros</a></li>
-            <li class="breadcrumb-item active">Resultados</li>
+            <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-2"></i></a></li>
+            <li class="breadcrumb-item"><a href="/metricas_distancia"><i class="fa-solid fa-pen-ruler me-2"></i>Métricas de distancia</a></li>
+            <li class="breadcrumb-item active"><i class="fa-solid fa-bullhorn me-2"></i>Resultados</li>
         </ol>
     </div>
    
-   
-
-    
-    
     <div class="row">
-        <h2>Distancia Euclidiana</h2>
-        {% for table in tablesE %}
-            {{titlesE[loop.index]}}
+        <h2><i class="fa-solid fa-bullhorn me-4"></i>RESULTADOS</h2>
+    </div>       
+
+    <div class="row">
+        <h2>Matriz de distancia {{metrica}}</h2>
+        {% for table in tables %}
+            {{titles[loop.index]}}
             {{ table|safe }}
         {% endfor %}
     </div>   
-    <div class="row">
-        <h2>Distancia Chebyshev</h2>
-        {% for table in tablesC %}
-            {{titlesC[loop.index]}}
-            {{ table|safe }}
-        {% endfor %}    
-    </div> 
-    <div class="row">
-        <h2>Distancia Manhattan</h2>
-        {% for table in tablesMan %}
-            {{titlesMan[loop.index]}}
-            {{ table|safe }}
-        {% endfor %}     
-    </div> 
-    <div class="row">
-        <h2>Distancia Minkowsky</h2>
-        {% for table in tablesMin %}
-            {{titlesMin[loop.index]}}
-            {{ table|safe }}
-        {% endfor %}     
-    </div> 
-    <div class="row col-12">
-        <a class="btn" href="/metricas_distancia/parametros"> Volver a calcular </a>
-    </div>
+    
+    
         
     
     

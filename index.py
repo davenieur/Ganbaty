@@ -7,7 +7,7 @@ import pandas as pd                 # Para la manipulación y análisis de los d
 import numpy as np                  # Para crear vectores y matrices n dimensionales
 import matplotlib.pyplot as plt     # Para la generación de gráficas a partir de los datos
 from crypt import methods           # Para subir archivos con métodos POST
-from flask import Flask, render_template,request # Para utilizar las herramientas de Flask
+from flask import Flask, redirect, render_template,request, url_for # Para utilizar las herramientas de Flask
 from werkzeug.utils import secure_filename # Para el manejo de nombre de archivos
 from apyori import apriori as ap    # Para el algoritmo apriori
 from scipy.spatial.distance import cdist    # Para el cálculo de distancias
@@ -22,19 +22,30 @@ from kneed import KneeLocator # Para el método de la rodilla
 
 # ---------------------------- { AQUÍ COMIENZA LA PARTE DE FLASK } ----------------------------
 app = Flask(__name__)
-#app.config['UPLOAD_FOLDER'] = "/static/csv"
 
 ALLOWED_EXTENSIONS = set(['csv'])
-FORM_ARGS = {
-    'soporte': fields.Str(required=True),
-    'confianza': fields.Str(required=True),
-    'elevacion': fields.Str(required=True)
-}
 
 
 
 # --- { CLUSTERING } ---
-@app.route('/clustering/parametros',methods=['GET', 'POST'])
+@app.route('/clustering/resultados',methods=['GET', 'POST'])
+def clustering():
+    if request.method == 'POST':
+        return render_template('clustering_parametros.html')
+            
+        #return redirect(url_for('clustering',df = df,columns_names_list = columns_names))
+
+            
+            
+    else:   
+
+        
+        return render_template('clustering_parametros.html', df =request.args.get('df'), columns_names_list = request.args.getlist('column_names_list[]'))
+        
+
+        
+
+@app.route('/clustering/seleccion',methods=['GET', 'POST'])
 def c_upload():
     if request.method == 'POST':
         #Importamos los datos
@@ -49,61 +60,23 @@ def c_upload():
         if file[1] in ALLOWED_EXTENSIONS:
             df = pd.read_csv(c_file)
 
-            # Borramos las filas con valores nulos
-            df = df.dropna()
+            # Obtenemos el nombre de las columnas del dataframe para la selección manual
+            columns_names = df.columns.values
 
-            # Clustering jerárquico
-
-            MatrizVariables = df.iloc[:, [3, 5, 6, 7, 10, 11]].values  #iloc para seleccionar filas y columnas
-                    
+            return render_template('clustering_parametros.html', df = df,columns_names_list = list(columns_names))
 
 
-            estandarizar = StandardScaler()                         # Se instancia el objeto StandardScaler o MinMaxScaler 
-            MEstandarizada = estandarizar.fit_transform(MatrizVariables) # Se calculan la media y desviación y se escalan los datos
+            #return redirect(url_for('clustering',df = df,columns_names_list = list(columns_names)))
+
             
-            # Obtenemos el árbol jerárquico
-            Arbol = shc.dendrogram(shc.linkage(MEstandarizada, method='complete', metric='euclidean'))
-
-            #Se crean las etiquetas de los elementos en los clusters
-            MJerarquico = AgglomerativeClustering(n_clusters= int(request.form['numclusters']), linkage='complete', affinity='euclidean')
-            MJerarquico.fit_predict(MEstandarizada)
-
-            df['clusterH'] = MJerarquico.labels_
-        
-
-            CentroidesH = df.groupby(['clusterH'])['Texture', 'Area', 'Smoothness', 'Compactness', 'Symmetry', 'FractalDimension'].mean()
-            
-
-            # Clustering particional
-            #Definición de k clusters para K-means
-            #Se utiliza random_state para inicializar el generador interno de números aleatorios
-            SSE = []
-            for i in range(2, 12):
-                km = KMeans(n_clusters=i, random_state=0)
-                km.fit(MEstandarizada)
-                SSE.append(km.inertia_)
-
-            kl = KneeLocator(range(2, 12), SSE, curve="convex", direction="decreasing")
-            
-            
-            #Se crean las etiquetas de los elementos en los clusters
-            MParticional = KMeans(n_clusters=kl.elbow, random_state=0).fit(MEstandarizada)
-            MParticional.predict(MEstandarizada)
-            
-            df['clusterP'] = MParticional.labels_
-
-            CentroidesP = df.groupby(['clusterP'])['Texture', 'Area', 'Smoothness', 'Compactness', 'Symmetry', 'FractalDimension'].mean()
-            return render_template('clustering_resultados.html',
-                    tablesJ=[ CentroidesH.to_html(classes='data')], titlesJ=CentroidesH.columns.values,
-                    tablesP=[ CentroidesP.to_html(classes='data')], titlesP=CentroidesP.columns.values)
             
     else:   
         
-        return render_template('clustering_parametros.html')
+        return render_template('clustering.html')
     
 
 # --- { METRICAS DE DISTANCIA } ---
-@app.route('/metricas_distancia/parametros',methods=['GET', 'POST'])
+@app.route('/metricas_distancia/resultados',methods=['GET', 'POST'])
 def md_upload():
     if request.method == 'POST':
         #Importamos los datos
@@ -121,52 +94,36 @@ def md_upload():
             # Borramos las filas con valores nulos
             df = df.dropna()
 
-
             estandarizar = StandardScaler()                         # Se instancia el objeto StandardScaler o MinMaxScaler 
             MEstandarizada = estandarizar.fit_transform(df)         # Se calculan la media y desviación y se escalan los datos
             
-            DstEuclidiana = cdist(MEstandarizada, MEstandarizada, metric='euclidean')
-            MEuclidiana = pd.DataFrame(DstEuclidiana)
+            opcion = int(request.form['distancia'])
             
-            DstChebyshev = cdist(MEstandarizada, MEstandarizada, metric='chebyshev')
-            MChebyshev = pd.DataFrame(DstChebyshev)
-            
-            DstManhattan = cdist(MEstandarizada, MEstandarizada, metric='cityblock')
-            MManhattan = pd.DataFrame(DstManhattan)
 
-            DstMinkowski = cdist(MEstandarizada, MEstandarizada, metric='minkowski', p=1.5)
-            MMinkowski = pd.DataFrame(DstMinkowski)
-            
-            
-            return render_template('metricas_distancia_resultados.html',
-                tablesE=[ MEuclidiana.to_html(classes='data')], titlesE=MEuclidiana.columns.values,
-                tablesC=[ MChebyshev.to_html(classes='data')], titlesC=MChebyshev.columns.values,
-                tablesMan=[ MManhattan.to_html(classes='data')], titlesMan=MManhattan.columns.values,
-                tablesMin=[ MMinkowski.to_html(classes='data')], titlesMin=MMinkowski.columns.values)
-            
-    else:   
-        
-        return render_template('metricas_distancia_parametros.html')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            if opcion == 1:
+                DstEuclidiana = cdist(MEstandarizada, MEstandarizada, metric='euclidean')
+                MEuclidiana = pd.DataFrame(DstEuclidiana)
+                return render_template('metricas_distancia_resultados.html',  metrica = "Euclidiana",
+                    tables=[ MEuclidiana.to_html(classes='data')], titles=MEuclidiana.columns.values)
+            elif opcion == 2:
+                DstChebyshev = cdist(MEstandarizada, MEstandarizada, metric='chebyshev')
+                MChebyshev = pd.DataFrame(DstChebyshev)
+                return render_template('metricas_distancia_resultados.html',  metrica = "Chebyshev",
+                    tables=[ MChebyshev.to_html(classes='data')], titles=MChebyshev.columns.values)
+            elif opcion == 3:
+                DstManhattan = cdist(MEstandarizada, MEstandarizada, metric='cityblock')
+                MManhattan = pd.DataFrame(DstManhattan)
+                return render_template('metricas_distancia_resultados.html',  metrica = "Manhattan",
+                    tables=[ MManhattan.to_html(classes='data')], titles=MManhattan.columns.values)
+            elif opcion ==4:
+                DstMinkowski = cdist(MEstandarizada, MEstandarizada, metric='minkowski', p=1.5)
+                MMinkowski = pd.DataFrame(DstMinkowski)
+                return render_template('metricas_distancia_resultados.html', metrica = "Minkowski",
+                    tables=[ MMinkowski.to_html(classes='data')], titles=MMinkowski.columns.values)           
+            return render_template('metricas_distancia_resultados.html')           
     
+    else:      
+        return render_template('metricas_distancia.html')
 
 # --- { REGLAS DE ASOCIACIÓN } ---
 @app.route('/reglas_asociacion/resultados',methods=['GET', 'POST'])
@@ -182,7 +139,7 @@ def ra_upload():
         file = filename.split('.')
         
         if file[1] in ALLOWED_EXTENSIONS:
-            #ra_file.save(os.path.join(app.static_folder,filename))
+
              # Leemos los datos
             df = pd.read_csv(ra_file,header=None)
 
@@ -214,7 +171,7 @@ def ra_upload():
 
             Resultados = list(Reglas)
             
-            return render_template('reglas_asociacion_resultados.html',Resultados = Resultados,soporte = soporte, confianza = confianza, elevacion = elevacion, size = len(Resultados))
+            return render_template('reglas_asociacion_resultados.html',filename = filename, Resultados = Resultados,soporte = soporte, confianza = confianza, elevacion = elevacion, size = len(Resultados))
     else:
         
         return render_template('reglas_asociacion.html')
@@ -224,7 +181,7 @@ def ra_upload():
 
 # --- { Redireccionando } ---
 @app.route('/clustering')
-def clustering():
+def cl():
     return render_template('clustering.html')
 
 @app.route('/reglas_asociacion')

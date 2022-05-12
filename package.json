@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@tkrotoff/bootstrap-input-spinner": "^0.20.5"
+  }
+}

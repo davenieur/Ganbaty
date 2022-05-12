@@ -4,16 +4,19 @@
 
 {% block navbar%}
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+        <a class="nav-link" aria-current="page" href="/"><i class="fa-solid fa-house me-2"></i>Inicio</a>
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Herramientas
+            <i class="fa-solid fa-toolbox me-2"></i> Herramientas
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="/metricas_distancia">Métricas de distancia</a></li>
-            <li><a class="dropdown-item" href="/clustering">Clustering</a></li>
+            <li><a class="dropdown-item" href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia"> <i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/clustering"><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</a></li>
+            <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i>Regresión logística</a></li>
+            <li><a class="dropdown-item" href="/arboles_decision"><i class="fa-solid fa-tree ms-2 me-4"></i>Árboles de decisión</a></li> 
+            <li><a class="dropdown-item" href="/bosques_aleatorios"><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-3"></i>Bosques aleatorios</a></li>
             
         </ul>
     </li>
@@ -24,7 +27,7 @@
         <div class="container-fluid">
             <div class="row row-header">
                 <div class="col-12">
-                    <h1>Reglas de asociación</h1>
+                    <h1><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</h1>
                 </div>
             </div>
         </div>
@@ -40,8 +43,8 @@
     <div class="row">
       
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active">Reglas de asociación</li>
+            <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-2"></i></a></li>
+            <li class="breadcrumb-item active"><i class="fa-solid fa-magnifying-glass me-2"></i>Reglas de asociación</li>
         </ol>
     </div>
 
@@ -50,7 +53,7 @@
             <!-- Tab -->
             <nav>
                 <div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active" id="nav-definicion-tab" data-bs-toggle="tab" href="#nav-definicion" role="tab" aria-controls="nav-definicion" aria-selected="true">Definición</a>
+                    <a class="nav-item nav-link active" id="nav-definicion-tab" data-bs-toggle="tab" href="#nav-definicion" role="tab" aria-controls="nav-definicion" aria-selected="true"> <span><i class="fa-regular fa-circle-question"></i></span> Definición</a>
                     <a class="nav-item nav-link" id="nav-aplicaciones-tab" data-bs-toggle="tab" href="#nav-aplicaciones" role="tab" aria-controls="nav-aplicaciones" aria-selected="false">Aplicaciones</a>
                 </div>
             </nav>
@@ -70,7 +73,7 @@
                                     Soporte
                                 </button>
                             </h2>
-                            <div id="collapseOne2" class="accordion-collapse collapse show" aria-labelledby="headingOne2" data-bs-parent="#accordionExample2">
+                            <div id="collapseOne2" class="accordion-collapse collapse" aria-labelledby="headingOne2" data-bs-parent="#accordionExample2">
                                 <div class="accordion-body">
                                     <p class="d-none d-sm-block">
                                         Indica cuan importante es una regla dentro del total de transacciones. Su fórmula es:
@@ -145,51 +148,56 @@
     </div>
  
     <!-- Button Modal -->
-    <button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form">Obtener reglas de asociación</button>
+    <button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form"> <i class="fa-solid fa-upload me-2"></i> Subir archivo CSV </button>
     <!-- Modal Content -->
     <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body p-0">
                     <div class="card  p-3 p-lg-4">
-                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <div class="card-header border-0 text-center pb-0">
-                            <h2 class="h4">Reglas de asociación</h2>
+                        <div class="card-header  text-center ">
+                            <h4>Reglas de asociación</h4>
                             <span>Sube tu archivo CSV e introduce los parámetros</span>
                         </div>
                         <div class="card-body p-0 pl-lg-3">
                             <form action="/reglas_asociacion/resultados" method="POST" enctype="multipart/form-data">
                                 <!-- Form -->
+                                <label for="ra_csvfile">Archivo CSV</label>
                                 <div class="form-group mb-4">
-                                    <div class="input-group">
-                                        <div class="form-group" >
-                                            <label for="ra_csvfile">Archivo CSV</label>
-                                            <input type = "file" id="ra_csvfile" name="ra_csvfile" accept=".csv" required/>
-                                        </div>
+                                    <div class="input-group">     
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-file"></i></span>
+                                        <input class="form-control" type = "file" id="ra_csvfile" name="ra_csvfile" accept=".csv" required/>
                                     </div>
                                 </div>
                                 <!-- End of Form -->
-                                <div class="form-group">
-                                    <!-- Form -->
-                                    <div class="form-group mb-4">
-                                        <label for="soporte">Soporte mínimo (%)</label>
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" name="soporte" min="0" max="100" required title="El soporte mínimo es de 0 y máximo de 100">
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <label for="confianza">Confianza (%)</label>
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" name="confianza"  min="0" max="100"  required title="La confianza mínima es de 0 y máxima de 100">
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <label for="elevacion">Elevación</label>
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" name="elevacion"  min="0" required title="La elevación mínima es de 0. Mayor a 1 (recomendable)">
-                                        </div>
+                             
+                                <!-- Form -->
+                                <label for="soporte">Soporte mínimo (%)</label>
+                                <div class="form-group mb-4">
+                                    
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-keyboard"></i></span>
+                                        
+                                        <input type="number" class="form-control" name="soporte" min="0" max="100" step="any" required title="El soporte mínimo es de 0 y máximo de 100">
                                     </div>
                                 </div>
+                                <label for="confianza">Confianza (%)</label>
+                                <div class="form-group mb-4">
+                                    
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-keyboard"></i></span>
+                                        <input type="number" class="form-control" name="confianza"  min="0" max="100" step="any" required title="La confianza mínima es de 0 y máxima de 100">
+                                    </div>
+                                </div>
+                                <label for="elevacion">Elevación</label>
+                                <div class="form-group mb-4">
+                                    
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-keyboard"></i></span>
+                                        <input type="number" class="form-control" name="elevacion"  min="0" required step="any" title="La elevación mínima es de 0. Mayor a 1 (recomendable)">
+                                    </div>
+                                </div>
+                              
 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-dark">Obtener reglas de asociación</button>

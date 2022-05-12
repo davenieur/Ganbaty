@@ -50,7 +50,7 @@ label {
     color: white;
     padding: 0.5rem;
     font-family: sans-serif;
-    border-radius: 0.3rem;
+    
     margin-bottom: 20px;
     margin-top: 1rem;
     margin-right: 5px;
@@ -76,12 +76,6 @@ a {
     padding-right:3px;
 }
   
-
-input:invalid{
-    border-color: #900;
-    background-color: #b72853;
-  }
-
   input:valid{
     border-color: black;
     background-color: #28b78d;
@@ -96,26 +90,26 @@ input:invalid{
     -webkit-appearance: none;
     appearance: none;
   
-    width: 50%;
+
     border: 1px solid #737373;
-    margin: 0;
+
   
     font-family: inherit;
     font-size: 100%;
-  
+    transition: 0.5s;
     box-sizing: border-box;
   }
 
   input[type=file]::file-selector-button {
-    border: 2px solid #243743;
+    border: 2px solid #28b78d;
     color: white;
-    padding: .2em .4em;
-    margin: .3em .4em;
-    background-color: #737373;
-    transition: 1s;
+    
+    background-color: #28b78d;
+    transition: 0.5s;
     font-family: 'Secular One', sans-serif;
     cursor: pointer;
   }
+
 
   h1{
     color: white;
@@ -123,7 +117,7 @@ input:invalid{
   }
 
   h2{
-    color: #243743; 
+    color: black; 
     font-family: 'Helvetica', 'Arial', sans-serif;
     text-transform:uppercase
   }
@@ -135,7 +129,8 @@ input:invalid{
 
   h4{
       font-size: medium;
-      text-transform:uppercase
+      text-transform:uppercase;
+      color: #28b78d;
       
   }
 
@@ -151,18 +146,12 @@ input:invalid{
     
 }
 
-.btn{
-    background-color: #28b78d;
-    margin-bottom: 10px;
-    color: #000000;
-    text-transform:uppercase;
-}
 
 
 p{
     font-family: 'Helvetica', 'Arial', sans-serif;
-    font-size: large;
-    
+    font-size:medium;
+    text-transform:uppercase;
 }
 
 label{
@@ -180,16 +169,18 @@ label{
     
 }
 
-
-#mediciones{
-    margin-top: 20px;
-    margin-bottom:  20px;
-
-}
-
 .btn{
     font-family: 'Secular One', sans-serif;
+    background-color: #28b78d;
+    color: black;
+    text-transform:uppercase;
 }
+
+.btn:hover{
+  background-color:white; 
+  color: black;
+}
+
 
 .row{
     margin-top: 20px;
@@ -219,42 +210,74 @@ table.dataframe, .dataframe th, .dataframe td {
     align-self: center;
 }
 
+
+
 .accordion-button:not(.collapsed) {
-    color: #FFF  ;
-    background-color: #243743 ;
+    color: black ;
+    background-color: white ;
   }
   
   
+  .accordion-button{
+    text-transform:uppercase;
+    color: black; 
+    background-color: white;
+    border-style: solid;
+    border-color:#737373;
+    border-width: 2px ;
+    
+  }
   
-  .accordion-button:link, .accordion-button:visited, .accordion-button:hover, .accordion-button:active  {
-    background-color: #28b78d ;
+  .accordion-button:link, .accordion-button:hover, .accordion-button:active, .accordion-button:focus  {
+    background-color: #243743;
     color:#FFF ;
     text-decoration: none ;
-    border: hidden ;
-
-    box-shadow: 0px ;
-
-        
+    box-shadow: 0px ; 
+    border-color: #FFF ;
   }
   
-  .accordion-button:focus {
-    z-index: 3;
-    border-color: #FFF ;
-    outline: 0;
-    box-shadow: 0 0 0 .25rem #737373 ;
-    margin-bottom: 0px;
+  .accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230c63e4'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    transform: rotate(180deg)
   }
+
+  
+  
 
 .accordion-body{
     background-color: black ;
     color: white;
-    margin-top: 0px;
 }
 
-.accordeon-header{
-    margin-bottom: 0px;
+.accordion-item{
+    border-color: white ;
 }
 
-.accordeon-item{
-    border-color: #FFF ;
+
+li{
+  text-transform:uppercase
+}
+
+
+#btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    
+  }
+
+
+.option{
+  background-color: #243743; 
+  color: #FFF;
+}
+
+
+.card{
+  background-color: black;
+  border-style: solid;
+  border-color: #28b78d;
+  border-width: 6px ;
+  color: white;
 }

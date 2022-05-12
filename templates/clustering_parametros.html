@@ -1,19 +1,23 @@
 {% extends './base.html' %}
 
-{% block title%}GANBATY: Métricas de distancia{% endblock%}
+{% block title%}GANBATY: Clustering{% endblock%}
 
 {% block navbar%}
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+        <a class="nav-link" aria-current="page" href="/"><i class="fa-solid fa-house me-2"></i>Inicio</a>
     </li>
     <li class="nav-item dropdown">
+        
         <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Herramientas
+            <i class="fa-solid fa-toolbox me-2"></i> Herramientas
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="/metricas_distancia">Métricas de distancia</a></li>
-            <li><a class="dropdown-item" href="/clustering">Clustering</a></li>
+            <li><a class="dropdown-item" href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia"></i> <i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/clustering"><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</a></li>
+            <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i></i>Regresión logística</a></li>
+            <li><a class="dropdown-item" href="/arboles_decision"><i class="fa-solid fa-tree ms-2 me-4"></i>Árboles de decisión</a></li> 
+            <li><a class="dropdown-item" href="/bosques_aleatorios"><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-3"></i>Bosques aleatorios</a></li>
             
         </ul>
     </li>
@@ -22,11 +26,10 @@
 {% block jumbotron%}
     <header class="jumbotron">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 col-sm-6">
-                    <h1>Clustering</h1>
+            <div class="row row-header">
+                <div class="col-12">
+                    <h1><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</h1>
                 </div>
-               
             </div>
         </div>
     </header>
@@ -41,57 +44,70 @@
     <div class="row">
       
         <ol class="col-12 breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="/clustering">Clustering</a></li>
-            <li class="breadcrumb-item active">Parámetros</li>
+            <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-2"></i></a></li>
+            <li class="breadcrumb-item active"><i class="fa-solid fa-circle-nodes me-2"></i>Clustering</li>
         </ol>
     </div>
 
     <div class="row">
-        <div class="col-12 ">
-            <h2>Importando archivos</h2>
-            <form class = "needs-validation" novalidate action="/clustering/parametros" method="POST" enctype="multipart/form-data">
-                <div class="card col-12">
-                    <h3 class="card-header"> IMPORTA TU ARCHIVO CSV </h3>
-                    <div class="card-body">
-                        
-                        <div class="form-group" >
-                            <input type = "file" id="c_csvfile" name="c_csvfile" accept=".csv" required/>
+        <!-- Button Modal -->
+        <button type="button" class="btn btn-block btn-primary mb-3 col-4" data-bs-toggle="modal" data-bs-target="#modal-form"> <i class="fa-solid fa-upload me-2"></i> Seleccionar características </button>
+        
+        
+        <form action="/clustering/resultados" method="POST" enctype="multipart/form-data">
+            <!-- Modal Content -->
+            <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body p-0">
+                            <div class="card  p-3 p-lg-4">
+                                <div class="card-header  text-center ">
+                                    <h4>Selección de características</h4>
+                                    <span>Selecciona las columnas a eliminar</span>
+                                </div>
+                                <div class="card-body p-0 pl-lg-3">
+                                    <!-- Form -->
+                                    <label for="distancia">Columnas del archivo</label>
+                                    <div class="form-group mb-4">
+                                        <div class="input-group"> 
+                                            <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-bars"></i></span>
+                                            <select class="form-select" multiple aria-label="multiple select example">
+                                                {% for item in columns_names_list %}
+                                                    <option value={{item}}>
+                                                        {{ item }} 
+                                                    </option> 
+                                                {% endfor %}
+                                
+                                            </select>  
+                                        </div>        
+                                    </div>
+                                
+                                </div>
+                            </div>
                         </div>
-                  
                     </div>
                 </div>
-        </div>
-    </div>
-    <div class="row">
-            <h2>Parámetros para realizar el clustering:</h2>
-            <div class="card col-12">
-                <h3 class="card-header"> Clustering jerárquico </h3>
-                <div class="card-body">
-                    <p class="d-none d-sm-block"> Para este algoritmo es necesario establecer un número de clusters.</p>
-                </div>
-                <div class="card-footer">
-                    <label class="col-form-label" for="soporte">Número de clusters</label>
-                    <input type="number"  name="numclusters" min="0" max="12" required title="El número mínimo es de 0 y máximo de 12">
-                </div>
             </div>
+            <!-- End of Modal Content -->
+
+
+
+
+
             
-        
-
-            <div class="form-group col-12">
-                <input type = "submit" id="submit" hidden>
-                <label class="submit"for="submit">Obtener reglas</label>
-            </div>
-      
-
+            
         </form>
-            
-            
-     
-    </div>   
+        
+    </div>
     
+    
+    
+  
 
-      
+    
+    
+   
+    
 
     
 {% endblock %}

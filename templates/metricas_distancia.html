@@ -4,16 +4,19 @@
 
 {% block navbar%}
     <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+        <a class="nav-link" aria-current="page" href="/"><i class="fa-solid fa-house me-2"></i>Inicio</a>
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Herramientas
+            <i class="fa-solid fa-toolbox me-2"></i> Herramientas
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="/metricas_distancia">Métricas de distancia</a></li>
-            <li><a class="dropdown-item" href="/clustering">Clustering</a></li>
+            <li><a class="dropdown-item" href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia"><i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/clustering"><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</a></li>
+            <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i>Regresión logística</a></li>
+            <li><a class="dropdown-item" href="/arboles_decision"><i class="fa-solid fa-tree ms-2 me-4"></i>Árboles de decisión</a></li> 
+            <li><a class="dropdown-item" href="/bosques_aleatorios"><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-3"></i>Bosques aleatorios</a></li>
             
         </ul>
     </li>
@@ -24,7 +27,7 @@
         <div class="container-fluid">
             <div class="row row-header">
                 <div class="col-12">
-                    <h1>Métricas de distancia</h1>
+                    <h1><i class="fa-solid fa-pen-ruler ms-2 me-4"></i>Métricas de distancia</h1>
                 </div>
             </div>
         </div>
@@ -38,32 +41,31 @@
 {% block body %}
    
     <div class="row">
-      
+        
         <ol class="col-12 breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active">Métricas de distancia</li>
+            <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-2"></i></a></li>
+            <li class="breadcrumb-item active"><i class="fa-solid fa-pen-ruler me-2"></i>Métricas de distancia</li>
         </ol>
     </div>
 
-    
     <div class="row">
-        <div class="col-12 flex-column">
-            <h2>¿Qué son las métricas de distancia?</h2>
-            <div class="card">
-                <h3 class="card-header"> Definición </h3>
-                <div class="card-body">
-                    <p class="d-none d-sm-block">Es un algoritmo de aprendizaje automático basado en reglas, que se
-                        utiliza para encontrar relaciones ocultas en los datos.</p>
+        <div class="col-12">
+            <!-- Tab -->
+            <nav>
+                <div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-definicion-tab" data-bs-toggle="tab" href="#nav-definicion" role="tab" aria-controls="nav-definicion" aria-selected="true">Definición</a>
+                    <a class="nav-item nav-link" id="nav-aplicaciones-tab" data-bs-toggle="tab" href="#nav-aplicaciones" role="tab" aria-controls="nav-aplicaciones" aria-selected="false">Aplicaciones</a>
+                    <a class="nav-item nav-link" id="nav-destacados-tab" data-bs-toggle="tab" href="#nav-destacados" role="tab" aria-controls="nav-destacados" aria-selected="false">Medidas de distancia destacadas</a>
                 </div>
-            </div>
-        </div> 
-    </div> 
-    <div class="row">
-        <div class="col-12 flex-column">
-            <h2>¿Dónde se usan las métricas de distancia?</h2>
-            <div class="card">
-                <h3 class="card-header"> Aprendizaje basado en instancias </h3>
-                <div class="card-body">
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-definicion" role="tabpanel" aria-labelledby="nav-definicion-tab">
+                    <p class="d-none d-sm-block">
+                        Una medida de distancia es una puntuación objetiva que resume la diferencia entre dos elementos
+                        (objetos), como: compras, ventas, diagnósticos, personas, usuarios, entre otros. 
+                    </p> 
+                </div>
+                <div class="tab-pane fade" id="nav-aplicaciones" role="tabpanel" aria-labelledby="nav-aplicaciones-tab">
                     <p class="d-none d-sm-block">Son muchas las aplicaciones actuales que se basan en el cálculo de similitudes <b>(distancias)</b> entre
                         vectores de datos (objetos).</p>
                     <ul>
@@ -75,34 +77,80 @@
                         <li>Marketing dirigido.</li>
                     </ul>
                 </div>
-            </div>
-            
-        </div> 
-    </div>
-    <div class="row">
-        <div class="col-12 flex-column">
-            <h2>Medidas de distancia destacadas</h2>
-            <div class="card">
-                <h3 class="card-header"> Sistemas de recomendaciones </h3>
-                <div class="card-body">
-                    <ul>
-                        <li>Distancia Euclidiana (Euclídea).</li>
-                        <li>Distancia de Chebyshev.</li>
-                        <li>Distancia de Manhattan (Geometría del taxista).</li>
-                        <li>Distancia de Minkowsky.</li>
-                    </ul>
+                <div class="tab-pane fade" id="nav-destacados" role="tabpanel" aria-labelledby="nav-destacados-tab">
+                        <p class="d-none d-sm-block">
+                            Son muchas las aplicaciones actuales que se basan en el cálculo de similitudes <b>(distancias)</b> entre
+                            vectores de datos (objetos).
+                        </p>
+                        <ul>
+                            <li>Distancia Euclidiana (Euclídea).</li>
+                            <li>Distancia de Chebyshev.</li>
+                            <li>Distancia de Manhattan (Geometría del taxista).</li>
+                            <li>Distancia de Minkowsky.</li>
+                        </ul>
                 </div>
             </div>
             
-        </div> 
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <button class="btn" href="/metricas_distancia/parametros"> Calcular las distancias</button>
+            
         </div>
     </div>
-    
+
+
+    <!-- Button Modal -->
+    <button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form"><i class="fa-solid fa-upload me-2"></i> Subir archivo CSV </button>
+    <!-- Modal Content -->
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card  p-3 p-lg-4">
+                        
+                        <div class="card-header text-center ">
+                            <h4>Métricas de distancia</h4>
+                            <span>Sube tu archivo CSV e introduce los parámetros</span>
+                        </div>
+                        <div class="card-body p-0 pl-lg-3">
+                            <form action="/metricas_distancia/resultados" method="POST" enctype="multipart/form-data">
+                                <!-- Form -->
+                                <label for="md_csvfile">Archivo CSV</label>
+                                <div class="form-group mb-4">
+                                    <div class="input-group">     
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-file"></i></span>
+                                        <input class="form-control" type = "file" id="md_csvfile" name="md_csvfile" accept=".csv" required/>
+                                    </div>
+                                </div>
+                               
+                                <!-- Form -->
+                                <label for="distancia">Métrica de distancia</label>
+                                <div class="form-group mb-4">
+                                   
+                                    <div class="input-group"> 
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-bars"></i></span>
+                                        <select class="form-select" name="distancia" aria-label="metricas" required>
+                                            <option value="1">Distancia Euclidiana (Euclídea)</option>
+                                            <option value="2">Distancia de Chebyshev</option>
+                                            <option value="3">Distancia de Manhattan (Geometría del taxista)</option>
+                                            <option value="4">Distancia de Minkowsky</option>
+                                        </select>  
+                                    </div>
+                                     
+                                </div>
+                                
+                               
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-dark">Obtener matriz de distancias</button>
+                                </div>
+                            </form>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal Content -->
+  
 
     
 
