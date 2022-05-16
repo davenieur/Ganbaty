@@ -13,9 +13,9 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="/metricas_distancia"></i> <i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia"><i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
             <li><a class="dropdown-item" href="/clustering"><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</a></li>
-            <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i></i>Regresión logística</a></li>
+            <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i>Regresión logística</a></li>
             <li><a class="dropdown-item" href="/arboles_decision"><i class="fa-solid fa-tree ms-2 me-4"></i>Árboles de decisión</a></li> 
             <li><a class="dropdown-item" href="/bosques_aleatorios"><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-3"></i>Bosques aleatorios</a></li>
             
@@ -45,71 +45,84 @@
       
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-2"></i></a></li>
-            <li class="breadcrumb-item active"><i class="fa-solid fa-circle-nodes me-2"></i>Clustering</li>
+            <li class="breadcrumb-item"><a href="/clustering">  <i class="fa-solid fa-circle-nodes me-2"></i>Clustering</a></li>
+            <li class="breadcrumb-item active"><i class="fa-solid fa-gear me-2"></i>Parámetros</li>
+       
         </ol>
     </div>
 
     <div class="row">
-        <!-- Button Modal -->
-        <button type="button" class="btn btn-block btn-primary mb-3 col-4" data-bs-toggle="modal" data-bs-target="#modal-form"> <i class="fa-solid fa-upload me-2"></i> Seleccionar características </button>
-        
-        
+        <h2><i class="fa-solid fa-gear me-2"></i>PARÁMETROS</h2>
+    </div>  
+
+
+    <div class="row">
+
+   
+        <h3>Mapa de calor del dataframe: <strong>{{filename}}</strong></h3>
+
+        <img class="img-fluid" src="data:image/png;base64, {{ plot_url }}">
+
+
+
         <form action="/clustering/resultados" method="POST" enctype="multipart/form-data">
-            <!-- Modal Content -->
-            <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body p-0">
-                            <div class="card  p-3 p-lg-4">
-                                <div class="card-header  text-center ">
-                                    <h4>Selección de características</h4>
-                                    <span>Selecciona las columnas a eliminar</span>
-                                </div>
-                                <div class="card-body p-0 pl-lg-3">
-                                    <!-- Form -->
-                                    <label for="distancia">Columnas del archivo</label>
-                                    <div class="form-group mb-4">
-                                        <div class="input-group"> 
-                                            <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-bars"></i></span>
-                                            <select class="form-select" multiple aria-label="multiple select example">
-                                                {% for item in columns_names_list %}
-                                                    <option value={{item}}>
-                                                        {{ item }} 
-                                                    </option> 
-                                                {% endfor %}
-                                
-                                            </select>  
-                                        </div>        
-                                    </div>
-                                
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Form -->
+            
+            <label for="colum[]">Selecciona las columnas que desea eliminar</label>
+            <div class="form-group mb-4">
+                <div class="input-group">
+                    <select class="form-select" multiple name="colum[]">
+                        {% for item in columns_names_list %}
+                            <option value= {{ loop.index }}>
+                                {{ item }} 
+                            </option> 
+                        {% endfor %}
+                        
+                    </select>
                 </div>
             </div>
-            <!-- End of Modal Content -->
 
 
+            <label for="clustering">Tipo de clustering</label>
+            <div class="form-group mb-4">
+                <div class="input-group">
+                        
+                    <select class="form-select" name="clustering" aria-label="Default select example">
+                        
+                        <option value="1">Particional</option>
+                        <option value="2">Jerárquico</option>
+                        
+                    </select>
+                
+                    
+                </div>
+            </div>
+            
+            <label class="mb-4" for="numclusters">Números de clusters para clustering jerárquico </label>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="range" class="form-range" min="1" max="12"  value="5" step="1" name="numclusters" oninput="this.nextElementSibling.value = this.value">
+                    <output>5</output>
+                </div>
+                
+            </div>
+            <label for="c_csvfile">Vuelve a subir el archivo <b>{{filename}}</b></label>
+            <div class="form-group mb-4">
+                <div class="input-group">     
+                    <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-file"></i></span>
+                    <input class="form-control" type = "file" id="c_csvfile" name="c_csvfile" accept=".csv" required/>
+                </div>
+            </div>
 
-
-
+            <!-- End of Form -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-dark">Realizar clustering</button>
+            </div>
             
             
         </form>
-        
+            
     </div>
-    
-    
-    
-  
-
-    
-    
-   
-    
-
-    
 {% endblock %}
 
 

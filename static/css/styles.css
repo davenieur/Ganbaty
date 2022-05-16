@@ -60,7 +60,9 @@ label {
 	cursor: pointer; 
 }
 
-
+strong{
+  color: #243743;
+}
 
 a {
     outline: none;
@@ -110,6 +112,15 @@ a {
     cursor: pointer;
   }
 
+  .form-range{
+    height: 0;
+    width: 50%;
+  }
+
+output{
+    color: #28b78d;
+    font-size:larger;
+}
 
   h1{
     color: white;
@@ -281,3 +292,4 @@ li{
   border-width: 6px ;
   color: white;
 }
+

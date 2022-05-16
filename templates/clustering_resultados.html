@@ -4,14 +4,20 @@
 
 {% block navbar%}
     
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="/"><i class="fa-solid fa-house me-2"></i>Inicio</a>
+    </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fa-solid fa-toolbox me-2"></i> Herramientas
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/reglas_asociacion">Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="/metricas_distancia">Métricas de distancia</a></li>
-            <li><a class="dropdown-item" href="/clustering">Clustering</a></li>
+            <li><a class="dropdown-item" href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia"><i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/clustering"><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</a></li>
+            <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i>Regresión logística</a></li>
+            <li><a class="dropdown-item" href="/arboles_decision"><i class="fa-solid fa-tree ms-2 me-4"></i>Árboles de decisión</a></li> 
+            <li><a class="dropdown-item" href="/bosques_aleatorios"><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-3"></i>Bosques aleatorios</a></li>
             
         </ul>
     </li>
@@ -40,39 +46,90 @@
         
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-1"></i></a></li>
-            <li class="breadcrumb-item"><a href="/clustering">Clustering</a></li>
-            <li class="breadcrumb-item"><a href="/clustering/parametros">Parámetros</a></li>
-            <li class="breadcrumb-item active">Resultados</li>
+            <li class="breadcrumb-item"><a href="/clustering"><i class="fa-solid fa-circle-nodes me-2"></i>Clustering</a></li>
+            <li class="breadcrumb-item active"><i class="fa-solid fa-bullhorn me-2"></i>Resultados</li>
         </ol>
     </div>
    
-   
+    <div class="row">
+        <h2><i class="fa-solid fa-bullhorn me-4"></i>RESULTADOS</h2>
+    </div>      
+
 
     
     
     <div class="row">
-        <h2>Clustering Jerárquico:</h2>
-        {% for table in tablesJ %}
-            {{titlesJ[loop.index]}}
-            {{ table|safe }}
-        {% endfor %}
-    </div>
-   
+        <h3>Clusteres obtenidos con <strong>clustering {{clustering}}</strong></h3>
+        <table class="table table-bordered table-sm">
+            <thead>
+              <tr>
+                <th scope="col">Cluster</th>
+                <th scope="col">Número de elementos</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for table in clusters %}
+                <tr>
+                    <td>{{loop.index-1}}</td>
+                    <td>{{table}}</td>  
+                </tr>
+               
+                {% endfor %}
+            </tbody>
+          </table>
 
-
-
-    <div class="row">
-        <h2>Clustering Particional:</h2>
-        {% for table in tablesP %}
-            {{titlesP[loop.index]}}
-            {{ table|safe }}
-        {% endfor %}
-    </div>  
-    
-    <div class="row col-12">
-        <a class="btn" href="/clustering/parametros"> Volver a calcular </a>
-    </div>
         
+        
+    </div>
+    <div class="row">
+        <h3>Características de cada cluster</h3>
+        {% for table in tables %}
+            {{ table|safe }}
+        {% endfor %}
+    </div>
+   
+    <div class="row">
+        <h3>Gráfica</h3>
+        <img class="img-fluid" src="data:image/png;base64, {{ plot_url }}">
+    </div>
+
+    
+    <!-- Button Modal -->
+    <button type="button" class="btn btn-block btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#modal-form"> <i class="fa-solid fa-upload me-2"></i> Volver a realizar clustering </button>
+    <!-- Modal Content -->
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card  p-3 p-lg-4">
+                        <div class="card-header  text-center ">
+                            <h4>Clustering</h4>
+                            <span>Sube tu archivo CSV</span>
+                        </div>
+                        <div class="card-body p-0 pl-lg-3">
+                            <form action="/clustering/parametros" method="POST" enctype="multipart/form-data">
+                                <!-- Form -->
+                                <label for="c_csvfile">Archivo CSV</label>
+                                <div class="form-group mb-4">
+                                    <div class="input-group">     
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-file"></i></span>
+                                        <input class="form-control" type = "file" id="c_csvfile" name="c_csvfile" accept=".csv" required/>
+                                    </div>
+                                </div>
+
+                                <!-- End of Form -->
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-dark">Seleccionar las características</button>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal Content -->
+   
     
     
 {% endblock %}

@@ -1,8 +1,10 @@
 # Importamos las bibliotecas necesarias 
 import os
 import base64
+import matplotlib
+matplotlib.use('Agg')
 from io import BytesIO
-from webargs import flaskparser, fields
+import base64
 import pandas as pd                 # Para la manipulación y análisis de los datos
 import numpy as np                  # Para crear vectores y matrices n dimensionales
 import matplotlib.pyplot as plt     # Para la generación de gráficas a partir de los datos
@@ -19,6 +21,14 @@ from sklearn.cluster import AgglomerativeClustering
 from sklearn.cluster import KMeans #Se importan las bibliotecas para el clustering particional
 from sklearn.metrics import pairwise_distances_argmin_min
 from kneed import KneeLocator # Para el método de la rodilla
+from sklearn import linear_model #Se importan las bibliotecas necesarias para generar el modelo de regresión logística
+from sklearn import model_selection
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+# Gráfica de los elementos y los centros de los clusters
+from mpl_toolkits.mplot3d import Axes3D
+
 
 # ---------------------------- { AQUÍ COMIENZA LA PARTE DE FLASK } ----------------------------
 app = Flask(__name__)
@@ -26,26 +36,168 @@ app = Flask(__name__)
 ALLOWED_EXTENSIONS = set(['csv'])
 
 
+# --- { REGRESIÓN LOGÍSTICA } ---     
+@app.route('/regresion_logistica/resultados',methods=['GET', 'POST'])
+def rl_upload():
+    if request.method == 'POST':
+        #Importamos los datos
+        rl_file = request.files["rl_csvfile"]
 
-# --- { CLUSTERING } ---
+        # Obtenemos el nombre del archivo
+        filename = secure_filename(rl_file.filename)
+
+        # Separamos el nombre del archivo
+        file = filename.split('.')
+        
+        if file[1] in ALLOWED_EXTENSIONS:
+            df = pd.read_csv(rl_file)
+
+            # Seleccionamos la variable clase
+
+            df = df.replace({'M': 0, 'B': 1})
+            Y = np.array(df[['Diagnosis']])
+
+
+            # Seleccionamos las variables predictoras
+            X = df.iloc[:, [3, 5, 6, 7, 10, 11]].values  #iloc para seleccionar filas y columnas según su posición
+
+                        
+            
+     
+            
+    else:   
+        
+        return render_template('regresion_logistica.html')
+
+
+
+
+# --- { CLUSTERING } ---  
 @app.route('/clustering/resultados',methods=['GET', 'POST'])
 def clustering():
     if request.method == 'POST':
-        return render_template('clustering_parametros.html')
-            
-        #return redirect(url_for('clustering',df = df,columns_names_list = columns_names))
+        #Importamos los datos
+        c_file = request.files["c_csvfile"]
 
+        # Obtenemos el nombre del archivo
+        filename = secure_filename(c_file.filename)
+
+        # Separamos el nombre del archivo
+        file = filename.split('.')
+        
+        if file[1] in ALLOWED_EXTENSIONS:
+            df = pd.read_csv(c_file)
+
+            # Borramos las filas con valores nulos
+            df = df.dropna()
+
+            ints = []
+
+            for element in request.form.getlist('colum[]'):
+                ints.append(int(element)-1)
+
+            # Eliminamos las columnas elegidas
+            MatrizVariables = df.drop(df.columns[ints], axis='columns') 
+
+            df = df.drop(df.columns[ints], axis='columns') 
+
+            estandarizar = StandardScaler()                         # Se instancia el objeto StandardScaler o MinMaxScaler 
+            MEstandarizada = estandarizar.fit_transform(MatrizVariables) # Se calculan la media y desviación y se escalan los datos
+
+            if int(request.form['clustering']) == 1: # Clustering particional
+                
+                #Se utiliza random_state para inicializar el generador interno de números aleatorios
+                SSE = []
+                for i in range(2, 12):
+                    km = KMeans(n_clusters=i, random_state=0)
+                    km.fit(MEstandarizada)
+                    SSE.append(km.inertia_)
+
+                # Aplicando el método de la rodilla
+                kl = KneeLocator(range(2, 12), SSE, curve="convex", direction="decreasing")
+                
+                
+                #Se crean las etiquetas de los elementos en los clusters
+                MParticional = KMeans(n_clusters=kl.elbow, random_state=0).fit(MEstandarizada)
+                MParticional.predict(MEstandarizada)
+                
+                df['clusterP'] = MParticional.labels_
+
+                #Obtenemos centroides
+                CentroidesP = df.groupby(['clusterP']).mean()
+                
+                #Cantidad de elementos en los clusters
+                clusters = df.groupby(['clusterP'])['clusterP'].count()
+                
+                
+                # Preparamos las tablas y titulos para mostrarlos en pantalla
+                tables = [CentroidesP.to_html(classes='data')]
+
+                titles = CentroidesP.columns.values
+                
+                clustering = "particional"
+
+                # Preparamos la imagen para mostrarla en la página web
+                img = BytesIO()
+
+                plt.figure(figsize=(10, 7))
+                sns.scatterplot(MEstandarizada[:,0], MEstandarizada[:,1], data=df, hue='clusterP', s=50, palette="deep")
+                plt.title('Clusters')
+                plt.grid()
+
+
+                plt.savefig(img, format='png')
+                plt.close()
+                img.seek(0)
+                plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+                        
+            elif int(request.form['clustering']) == 2: # Clustering jerárquico
+                
+
+
+                #Se crean las etiquetas de los elementos en los clusters
+                MJerarquico = AgglomerativeClustering(n_clusters= int(request.form['numclusters']), linkage='complete', affinity='euclidean')
+                MJerarquico.fit_predict(MEstandarizada)
+
+                df['clusterH'] = MJerarquico.labels_
             
+                #Obtenemos centroides
+                CentroidesH = df.groupby(['clusterH']).mean()
+
+                #Cantidad de elementos en los clusters
+                clusters = df.groupby(['clusterH'])['clusterH'].count()
+
+                tables = [ CentroidesH.to_html(classes='data')]
+
+                titles = CentroidesH.columns.values
+
+                clustering = "jerárquico"
+
+                # Preparamos la imagen para mostrarla en la página web
+                img = BytesIO()
+
+                plt.figure(figsize=(10, 7))
+                sns.scatterplot(MEstandarizada[:,0], MEstandarizada[:,1], data=df, hue='clusterH', s=50, palette="deep")
+                plt.title('Clusters')
+                plt.grid()
+
+
+                plt.savefig(img, format='png')
+                plt.close()
+                img.seek(0)
+                plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+            
+
+            return render_template('clustering_resultados.html', clusters = clusters.to_list(),
+                tables = tables, titles = titles, clustering = clustering,plot_url=plot_url)        
             
     else:   
-
         
-        return render_template('clustering_parametros.html', df =request.args.get('df'), columns_names_list = request.args.getlist('column_names_list[]'))
-        
+        return render_template('clustering.html')
 
-        
 
-@app.route('/clustering/seleccion',methods=['GET', 'POST'])
+
+@app.route('/clustering/parametros',methods=['GET', 'POST'])
 def c_upload():
     if request.method == 'POST':
         #Importamos los datos
@@ -60,15 +212,26 @@ def c_upload():
         if file[1] in ALLOWED_EXTENSIONS:
             df = pd.read_csv(c_file)
 
+            # Preparamos la imagen para mostrarla en la página web
+            img = BytesIO()
+
+            Corrdf = df.corr(method='pearson')
+            plt.figure(figsize=(14,14))
+            MatrizInf = np.triu(Corrdf)
+            sns.heatmap(Corrdf, cmap='RdBu_r', annot=True, mask=MatrizInf)
+
+
+            plt.savefig(img, format='png')
+            plt.close()
+            img.seek(0)
+            plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+
+
             # Obtenemos el nombre de las columnas del dataframe para la selección manual
             columns_names = df.columns.values
 
-            return render_template('clustering_parametros.html', df = df,columns_names_list = list(columns_names))
-
-
-            #return redirect(url_for('clustering',df = df,columns_names_list = list(columns_names)))
-
-            
+            return render_template('clustering_parametros.html',columns_names_list = list(columns_names), 
+                plot_url=plot_url, filename = filename)
             
     else:   
         
@@ -99,7 +262,6 @@ def md_upload():
             
             opcion = int(request.form['distancia'])
             
-
             if opcion == 1:
                 DstEuclidiana = cdist(MEstandarizada, MEstandarizada, metric='euclidean')
                 MEuclidiana = pd.DataFrame(DstEuclidiana)
@@ -180,9 +342,9 @@ def ra_upload():
 
 
 # --- { Redireccionando } ---
-@app.route('/clustering')
-def cl():
-    return render_template('clustering.html')
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/reglas_asociacion')
 def ra():
@@ -192,9 +354,13 @@ def ra():
 def md():
     return render_template('metricas_distancia.html')
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+@app.route('/clustering')
+def cl():
+    return render_template('clustering.html')
+
+@app.route('/regresion_logistica')
+def rl():
+    return render_template('regresion_logistica.html')
 
 # --- { Main } ---
 if __name__ == '_main_':

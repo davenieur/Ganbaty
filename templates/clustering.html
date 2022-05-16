@@ -13,9 +13,9 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="/metricas_distancia"></i> <i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia"><i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
             <li><a class="dropdown-item" href="/clustering"><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</a></li>
-            <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i></i>Regresión logística</a></li>
+            <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i>Regresión logística</a></li>
             <li><a class="dropdown-item" href="/arboles_decision"><i class="fa-solid fa-tree ms-2 me-4"></i>Árboles de decisión</a></li> 
             <li><a class="dropdown-item" href="/bosques_aleatorios"><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-3"></i>Bosques aleatorios</a></li>
             
@@ -154,10 +154,10 @@
                     <div class="card  p-3 p-lg-4">
                         <div class="card-header  text-center ">
                             <h4>Clustering</h4>
-                            <span>Sube tu archivo CSV e introduce los parámetros</span>
+                            <span>Sube tu archivo CSV</span>
                         </div>
                         <div class="card-body p-0 pl-lg-3">
-                            <form action="/clustering/seleccion" method="POST" enctype="multipart/form-data">
+                            <form action="/clustering/parametros" method="POST" enctype="multipart/form-data">
                                 <!-- Form -->
                                 <label for="c_csvfile">Archivo CSV</label>
                                 <div class="form-group mb-4">
@@ -166,12 +166,12 @@
                                         <input class="form-control" type = "file" id="c_csvfile" name="c_csvfile" accept=".csv" required/>
                                     </div>
                                 </div>
+
                                 <!-- End of Form -->
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-dark">Seleccionar características</button>
+                                    <button type="submit" class="btn btn-dark">Seleccionar las características</button>
                                 </div>
-                            </form>
-                           
+                            </form> 
                         </div>
                     </div>
                 </div>
