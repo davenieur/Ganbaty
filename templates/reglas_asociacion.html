@@ -27,7 +27,7 @@
         <div class="container-fluid">
             <div class="row row-header">
                 <div class="col-12">
-                    <h1><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</h1>
+                    <h1><i class="fa-solid fa-magnifying-glass me-4"></i>Reglas de asociación</h1>
                 </div>
             </div>
         </div>
@@ -49,108 +49,84 @@
     </div>
 
     <div class="row">
-        <div class="col-12">
-            <!-- Tab -->
-            <nav>
-                <div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active" id="nav-definicion-tab" data-bs-toggle="tab" href="#nav-definicion" role="tab" aria-controls="nav-definicion" aria-selected="true"> <span><i class="fa-regular fa-circle-question"></i></span> Definición</a>
-                    <a class="nav-item nav-link" id="nav-aplicaciones-tab" data-bs-toggle="tab" href="#nav-aplicaciones" role="tab" aria-controls="nav-aplicaciones" aria-selected="false">Aplicaciones</a>
-                </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-definicion" role="tabpanel" aria-labelledby="nav-definicion-tab">
-                    <p class="d-none d-sm-block">
-                        Es un algoritmo de aprendizaje automático basado en reglas, que se
-                        utiliza para encontrar relaciones ocultas en los datos. Consiste en identificar un 
-                        conjunto de patrones secuenciales en forma de reglas de tipo (Si/Entonces). 
-                    </p> 
-                    <p class="d-none d-sm-block">
-                        Este algoritmo emplea tres reglas significativas:
-                    </p>
-                    <div class="accordion" id="accordionExample2">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne2">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">
-                                    Soporte
-                                </button>
-                            </h2>
-                            <div id="collapseOne2" class="accordion-collapse collapse" aria-labelledby="headingOne2" data-bs-parent="#accordionExample2">
-                                <div class="accordion-body">
-                                    <p class="d-none d-sm-block">
-                                        Indica cuan importante es una regla dentro del total de transacciones. Su fórmula es:
-                                    </p>  
-                                    <h5 class="text-center">
-                                        \(
-                                            Soporte = \frac{Frecuencia (X,Y)}{N}
-                                        \)
-                                    </h5>
-                                    Donde: <b>N = Total de transacciones.</b> 
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo2">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
-                                Confianza
-                            </button>
-                            </h2>
-                            <div id="collapseTwo2" class="accordion-collapse collapse" aria-labelledby="headingTwo2" data-bs-parent="#accordionExample2">
-                                <div class="accordion-body">
-                                    <p class="d-none d-sm-block">
-                                        Indica que tan fiable es una regla. Su fórmula es:
-                                    </p>  
-                                    <h5 class="text-center">
-                                        \(
-                                            Confianza = \frac{Frecuencia (X,Y)}{Frecuencia (X)}
-                                        \)
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree2">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false" aria-controls="collapseThree2">
-                                Elevación (lift)
-                            </button>
-                            </h2>
-                            <div id="collapseThree2" class="accordion-collapse collapse" aria-labelledby="headingThree2" data-bs-parent="#accordionExample2">
-                                <div class="accordion-body">
-                                    <p class="d-none d-sm-block">
-                                        Indica el nivel de relación (aumento de probabilidad) entre el antecedente y
-                                        consecuente de la regla. Su fórmula es:
-                                    </p>  
-                                    <h5 class="text-center">
-                                        \(
-                                            Lift = \frac{Soporte}{Soporte(X) X Soporte(Y)}
-                                        \)
-                                    </h5>
-                                    <p class="text-center">
-                                        Lift < 1 <b>(Relación negativa)</b>, Lift = 1 <b>(Independientes)</b>, Lift > 1 <b>(Relación positiva)</b>
-                                    </p>
-                                    
-                                </div>
-                            </div>
-                        </div>
+        
+        <h3><i class="fa-regular fa-circle-question me-2"></i>¿Qué son las reglas de asociación? </h3>
+    
+        <p class="d-none d-sm-block">
+            Es un algoritmo de aprendizaje automático basado en reglas, que se
+            utiliza para encontrar relaciones ocultas en los datos. Consiste en identificar un 
+            conjunto de patrones secuenciales en forma de reglas de tipo (Si/Entonces). 
+        </p> 
+        <p class="d-none d-sm-block">
+            Este algoritmo emplea tres reglas significativas:
+        </p>
+        <div class="accordion" id="accordionExample2">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne2">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">
+                        Soporte
+                    </button>
+                </h2>
+                <div id="collapseOne2" class="accordion-collapse collapse" aria-labelledby="headingOne2" data-bs-parent="#accordionExample2">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block">
+                            Indica cuan importante es una regla dentro del total de transacciones. Su fórmula es:
+                        </p>  
+                        <h5 class="text-center">
+                            \(
+                                Soporte = \frac{Frecuencia (X,Y)}{N}
+                            \)
+                        </h5>
+                        Donde: <b>N = Total de transacciones.</b> 
                         
                     </div>
-                    
-
-                   
-
-
-                </div>
-                <div class="tab-pane fade" id="nav-aplicaciones" role="tabpanel" aria-labelledby="nav-aplicaciones-tab">
-                    <p class="d-none d-sm-block">
-                        Son usados en sistemas de recomendaciones. Un sistema de recomendación incluye uno o más algoritmos de Inteligencia Artificial que buscan
-                        contenido (información) sobre una fuente de datos, ya sea de clientes o usuarios, para generar
-                        recomendaciones en función de los gustos o necesidades de la persona.
-                    </p>
                 </div>
             </div>
-          
-            
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo2">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
+                    Confianza
+                </button>
+                </h2>
+                <div id="collapseTwo2" class="accordion-collapse collapse" aria-labelledby="headingTwo2" data-bs-parent="#accordionExample2">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block">
+                            Indica que tan fiable es una regla. Su fórmula es:
+                        </p>  
+                        <h5 class="text-center">
+                            \(
+                                Confianza = \frac{Frecuencia (X,Y)}{Frecuencia (X)}
+                            \)
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree2">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree2" aria-expanded="false" aria-controls="collapseThree2">
+                    Elevación (lift)
+                </button>
+                </h2>
+                <div id="collapseThree2" class="accordion-collapse collapse" aria-labelledby="headingThree2" data-bs-parent="#accordionExample2">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block">
+                            Indica el nivel de relación (aumento de probabilidad) entre el antecedente y
+                            consecuente de la regla. Su fórmula es:
+                        </p>  
+                        <h5 class="text-center">
+                            \(
+                                Lift = \frac{Soporte}{Soporte(X) X Soporte(Y)}
+                            \)
+                        </h5>
+                        <p class="text-center">
+                            Lift < 1 <b>(Relación negativa)</b>, Lift = 1 <b>(Independientes)</b>, Lift > 1 <b>(Relación positiva)</b>
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
+        
     </div>
  
     <!-- Button Modal -->

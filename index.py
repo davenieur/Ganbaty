@@ -28,6 +28,14 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 # Gráfica de los elementos y los centros de los clusters
 from mpl_toolkits.mplot3d import Axes3D
+#Se importan las bibliotecas necesarias para generar el modelo de regresión logística
+from sklearn import linear_model
+from sklearn import model_selection
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn import preprocessing
+from sklearn import utils
 
 
 # ---------------------------- { AQUÍ COMIENZA LA PARTE DE FLASK } ----------------------------
@@ -37,7 +45,106 @@ ALLOWED_EXTENSIONS = set(['csv'])
 
 
 # --- { REGRESIÓN LOGÍSTICA } ---     
+@app.route('/regresion_logistica/pronostico',methods=['GET', 'POST'])
+def regresion_logistica_pronostico():
+    if request.method == 'POST':
+        ints = []
+        for element in request.form.getlist('colum[]'):
+
+
+            var = request.form['variable1']
+        # Obtenemos las variables predictorias
+        #ints = [int(request.form['v_clase'])-1]
+        #for element in request.form.getlist('colum[]'):
+        #    ints.append(int(element)-1)
+
+           
+        return render_template('regresion_logistica_pronostico.html',var = var)
+
+
+
+
+
 @app.route('/regresion_logistica/resultados',methods=['GET', 'POST'])
+def regresion_logistica():
+    if request.method == 'POST':
+        #Importamos los datos
+        rl_file = request.files["rl_csvfile"]
+
+        # Obtenemos el nombre del archivo
+        filename = secure_filename(rl_file.filename)
+
+        # Separamos el nombre del archivo
+        file = filename.split('.')
+        
+        if file[1] in ALLOWED_EXTENSIONS:
+            df = pd.read_csv(rl_file)
+
+            # Borramos las filas con valores nulos
+            df = df.dropna()
+
+            # Obtenemos la variable clase
+            valores = df[df.columns[int(request.form['v_clase'])-1]].unique()
+
+            # Convertimos valores cualitativos a cuantitativos de la variable clase
+            df = df.replace({valores[0]: 0, valores[1]: 1})
+            
+            # Variable clase
+            Y = np.array(df[[df.columns[int(request.form['v_clase'])-1]]])
+
+            # Obtenemos las variables predictorias
+            ints = [int(request.form['v_clase'])-1]
+
+            for element in request.form.getlist('colum[]'):
+                ints.append(int(element)-1)
+
+            # Eliminamos las columnas elegidas
+            df = df.drop(df.columns[ints], axis='columns') 
+
+            # Variables predictoras
+            X = np.array(df[df.columns.values.tolist()])
+ 
+            # Regresión logística
+            X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, 
+                                                                                test_size = 0.2, 
+                                                                                random_state = 1234,
+                                                                                shuffle = True)
+
+            #Se entrena el modelo a partir de los datos de entrada
+            Clasificacion = linear_model.LogisticRegression()
+            Clasificacion.fit(X_train, Y_train)
+
+            #Predicciones probabilísticas de los datos de prueba
+            Probabilidad = Clasificacion.predict_proba(X_validation)
+            pd.DataFrame(Probabilidad)
+            
+            #Predicciones con clasificación final 
+            Predicciones = Clasificacion.predict(X_validation)
+            pd.DataFrame(Predicciones)
+
+            #Se calcula la exactitud promedio de la validación
+            score = Clasificacion.score(X_validation, Y_validation)
+
+            #Matriz de clasificación
+            Y_Clasificacion = Clasificacion.predict(X_validation)
+            Matriz_Clasificacion = pd.crosstab(Y_validation.ravel(), 
+                                            Y_Clasificacion, 
+                                            rownames=['Real'], 
+                                            colnames=['Clasificación']) 
+            
+            #Reporte de la clasificación
+            reporte = classification_report(Y_validation, Y_Clasificacion,output_dict='true')
+            
+            return render_template('regresion_logistica_resultados.html', score = score, 
+                tables=[ Matriz_Clasificacion.to_html(classes='data')], titles=Matriz_Clasificacion.columns.values,
+                valores = valores, reporte = reporte, predictoras = df.columns.values.tolist(), tam = len(df.columns.values.tolist())-1)
+            
+    else:   
+        
+        return render_template('regresion_logistica_resultados.html')
+
+
+@app.route('/regresion_logistica/parametros',methods=['GET', 'POST'])
 def rl_upload():
     if request.method == 'POST':
         #Importamos los datos
@@ -52,22 +159,30 @@ def rl_upload():
         if file[1] in ALLOWED_EXTENSIONS:
             df = pd.read_csv(rl_file)
 
-            # Seleccionamos la variable clase
+            # Preparamos la imagen para mostrarla en la página web
+            img = BytesIO()
 
-            df = df.replace({'M': 0, 'B': 1})
-            Y = np.array(df[['Diagnosis']])
+            Corrdf = df.corr(method='pearson')
+            plt.figure(figsize=(14,14))
+            MatrizInf = np.triu(Corrdf)
+            sns.heatmap(Corrdf, cmap='RdBu_r', annot=True, mask=MatrizInf)
 
 
-            # Seleccionamos las variables predictoras
-            X = df.iloc[:, [3, 5, 6, 7, 10, 11]].values  #iloc para seleccionar filas y columnas según su posición
+            plt.savefig(img, format='png')
+            plt.close()
+            img.seek(0)
+            plot_url = base64.b64encode(img.getvalue()).decode('utf8')
 
-                        
-            
-     
-            
+
+            # Obtenemos el nombre de las columnas del dataframe para la selección manual
+            columns_names = df.columns.values
+
+            return render_template('regresion_logistica_parametros.html',columns_names_list = list(columns_names), 
+                plot_url=plot_url, filename = filename)
+        
     else:   
         
-        return render_template('regresion_logistica.html')
+        return render_template('regresion_logistica_parametros.html')
 
 
 
@@ -193,7 +308,7 @@ def clustering():
             
     else:   
         
-        return render_template('clustering.html')
+        return render_template('clustering_resultados.html')
 
 
 
@@ -235,7 +350,7 @@ def c_upload():
             
     else:   
         
-        return render_template('clustering.html')
+        return render_template('clustering_parametros.html')
     
 
 # --- { METRICAS DE DISTANCIA } ---
@@ -361,6 +476,10 @@ def cl():
 @app.route('/regresion_logistica')
 def rl():
     return render_template('regresion_logistica.html')
+
+
+
+
 
 # --- { Main } ---
 if __name__ == '_main_':

@@ -114,7 +114,7 @@ a {
 
   .form-range{
     height: 0;
-    width: 50%;
+
   }
 
 output{
@@ -134,7 +134,7 @@ output{
   }
 
   h3{
-    color: #737373;
+    color: #243743
     text-transform:uppercase  
   }
 
@@ -156,8 +156,6 @@ output{
     padding: 10px;
     
 }
-
-
 
 p{
     font-family: 'Helvetica', 'Arial', sans-serif;
@@ -204,8 +202,7 @@ table.dataframe, .dataframe th, .dataframe td {
     border-bottom: 1px solid #243743; 
     border-left: 1px solid #243743; 
     text-align:center;
-    padding: 10px;
-    margin-bottom: 40px;
+    padding: 5px;
     font-size: 0.9em;
   }
   
