@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block title%}Regresión logística{% endblock%}
+{% block title%}Árboles de decisión{% endblock%}
 
 {% block navbar%}
     
@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="row row-header">
                 <div class="col-12 col-sm-6">
-                    <h1><i class="fa-solid fa-chart-line me-4"></i></i>Regresión logística</h1>
+                    <h1><i class="fa-solid fa-tree me-4"></i>Árboles de decisión</a></h1>
                 </div>
             </div>
         </div>
@@ -45,8 +45,8 @@
         
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-1"></i></a></li>
-            <li class="breadcrumb-item"><a href="/regresion_logistica"><i class="fa-solid fa-chart-line me-2"></i>Regresión logística</a></li>
-            <li class="breadcrumb-item"><a href="/regresion_logistica/parametros_"><i class="fa-solid fa-gear me-2"></i>Parámetros</a></li>
+            <li class="breadcrumb-item"><a href="/arboles_decision"><i class="fa-solid fa-tree me-2"></i>Árboles de decisión</a></li>
+            <li class="breadcrumb-item"><a href="/arboles_decision/parametros_"><i class="fa-solid fa-gear me-2"></i>Parámetros</a></li>
             <li class="breadcrumb-item active"><i class="fa-solid fa-bullhorn me-2"></i>Resultados</li>
         
         </ol>
@@ -82,10 +82,10 @@
                 <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading" data-bs-parent="#accordionExample6">
                     <div class="accordion-body"> 
                         <div >
-                            <b>Precisión de {{valores[0]}}: </b> {{reporte['0']['precision']}}
+                           
                         </div>
                         <div>
-                             <b>Precisión de {{valores[1]}}: </b> {{reporte['1']['precision']}}
+                             
                         </div> 
                     </div>
                 </div>
@@ -100,9 +100,7 @@
                 </h2>
                 <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading" data-bs-parent="#accordionExample5">
                     <div class="accordion-body">
-                        {% for table in tables %}
-                            {{ table|safe }}
-                        {% endfor %}
+                        
                     </div>
                 </div>
             </div>

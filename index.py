@@ -1,47 +1,164 @@
-# Importamos las bibliotecas necesarias 
+                        # --- { IMPORTAMOS LAS BIBLIOTECAS NECESARIAS } ----
+
+# --- Para el manejo de imagénes y archivos de la página 
 import os
 import base64
 import matplotlib
 matplotlib.use('Agg')
 from io import BytesIO
 import base64
-import pandas as pd                 # Para la manipulación y análisis de los datos
-import numpy as np                  # Para crear vectores y matrices n dimensionales
-import matplotlib.pyplot as plt     # Para la generación de gráficas a partir de los datos
-from crypt import methods           # Para subir archivos con métodos POST
-from flask import Flask, redirect, render_template,request, url_for # Para utilizar las herramientas de Flask
-from werkzeug.utils import secure_filename # Para el manejo de nombre de archivos
-from apyori import apriori as ap    # Para el algoritmo apriori
-from scipy.spatial.distance import cdist    # Para el cálculo de distancias
-from scipy.spatial import distance  # Para el cálculo de distancias
-from sklearn.preprocessing import StandardScaler, MinMaxScaler # Para la estandarización de datos
-import seaborn as sns             # Para la visualización de datos basado en matplotlib
-import scipy.cluster.hierarchy as shc #Se importan las bibliotecas de clustering jerárquico para crear el árbol
-from sklearn.cluster import AgglomerativeClustering
-from sklearn.cluster import KMeans #Se importan las bibliotecas para el clustering particional
-from sklearn.metrics import pairwise_distances_argmin_min
-from kneed import KneeLocator # Para el método de la rodilla
-from sklearn import linear_model #Se importan las bibliotecas necesarias para generar el modelo de regresión logística
-from sklearn import model_selection
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
-# Gráfica de los elementos y los centros de los clusters
+from werkzeug.utils import secure_filename
+
+# --- Para la manipulación, análisis de datos y generación de gráficas
+import pandas as pd               
+import numpy as np                 
+import matplotlib.pyplot as plt  
 from mpl_toolkits.mplot3d import Axes3D
-#Se importan las bibliotecas necesarias para generar el modelo de regresión logística
+
+# --- Para el redireccionamiento de flask
+from flask import Flask, redirect, render_template,request, url_for 
+
+# --- Para las reglas de asociacion
+from apyori import apriori as ap    
+
+# --- Para el cálculo de distancias
+from scipy.spatial.distance import cdist    
+from scipy.spatial import distance  
+
+# --- Para estandarizar los datos
+from sklearn.preprocessing import StandardScaler, MinMaxScaler 
+
+# --- Para visualizar los datos basados en matplotlib
+import seaborn as sns             # Para la visualización de datos basado en matplotlib
+
+# --- Para clustering jerárquico y particional
+import scipy.cluster.hierarchy as shc 
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import KMeans 
+from sklearn.metrics import pairwise_distances_argmin_min
+from kneed import KneeLocator 
+
+# --- Para regresión logística
 from sklearn import linear_model
-from sklearn import model_selection
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
 from sklearn import preprocessing
 from sklearn import utils
 
+# --- Para validación de la clasificación
+from sklearn import model_selection
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+
+# --- Para árboles de decisión
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn import model_selection
 
 # ---------------------------- { AQUÍ COMIENZA LA PARTE DE FLASK } ----------------------------
 app = Flask(__name__)
 
 ALLOWED_EXTENSIONS = set(['csv'])
+
+                                # ---{ ÁRBOLES DE DECISIÓN } ---
+@app.route('/arboles_decision/resultados',methods=['GET', 'POST'])
+def arboles_decision():
+    if request.method == 'POST':
+        #Importamos los datos
+        ad_file = request.files["ad_csvfile"]
+
+        # Obtenemos el nombre del archivo
+        filename = secure_filename(ad_file.filename)
+
+        # Separamos el nombre del archivo
+        file = filename.split('.')
+        
+        if file[1] in ALLOWED_EXTENSIONS:
+            df = pd.read_csv(ad_file)
+
+            # Obtenemos las variables predictorias
+            ints = [int(request.form['v_clase'])-1]
+
+            for element in request.form.getlist('colum[]'):
+                ints.append(int(element)-1)
+
+
+            if int(request.form['tipoArbol']) == 1:
+                
+                # Variable clase
+                Y = np.array(df[[df.columns[int(request.form['v_clase'])-1]]])
+
+                # Eliminamos las columnas elegidas
+                df = df.drop(df.columns[ints], axis='columns') 
+
+                # Variables predictoras
+                X = np.array(df[df.columns.values.tolist()])
+
+                # Separamos los datos
+                X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X, Y, 
+                                                                    test_size = 0.2, 
+                                                                    random_state = 1234, 
+                                                                    shuffle = True)
+
+                # Entrenamos el modelo
+                PronosticoAD = DecisionTreeRegressor(random_state=0)
+                PronosticoAD.fit(X_train, Y_train)
+
+                #Se genera el pronóstico
+                Y_Pronostico = PronosticoAD.predict(X_test)
+
+                score = r2_score(Y_test, Y_Pronostico)
+            
+                return render_template('arboles_decision_resultados.html', score = score, 
+                    predictoras = df.columns.values.tolist(), tam = len(df.columns.values.tolist())-1)
+            
+    else:   
+        
+        return render_template('arboles_decision_resultados.html')
+
+
+
+@app.route('/arboles_decision/parametros',methods=['GET', 'POST'])
+def ad_upload():
+    if request.method == 'POST':
+        #Importamos los datos
+        ad_file = request.files["ad_csvfile"]
+
+        # Obtenemos el nombre del archivo
+        filename = secure_filename(ad_file.filename)
+
+        # Separamos el nombre del archivo
+        file = filename.split('.')
+        
+        if file[1] in ALLOWED_EXTENSIONS:
+            df = pd.read_csv(ad_file)
+
+            # Preparamos la imagen para mostrarla en la página web
+            img = BytesIO()
+
+            Corrdf = df.corr(method='pearson')
+            plt.figure(figsize=(14,14))
+            MatrizInf = np.triu(Corrdf)
+            sns.heatmap(Corrdf, cmap='RdBu_r', annot=True, mask=MatrizInf)
+
+
+            plt.savefig(img, format='png')
+            plt.close()
+            img.seek(0)
+            plot_url = base64.b64encode(img.getvalue()).decode('utf8')
+
+
+            # Obtenemos el nombre de las columnas del dataframe para la selección manual
+            columns_names = df.columns.values
+
+            return render_template('arboles_decision_parametros.html',columns_names_list = list(columns_names), 
+                plot_url=plot_url, filename = filename)
+        
+    else:   
+        
+        return render_template('arboles_decision_parametros.html')
+
+
+
 
 
 # --- { REGRESIÓN LOGÍSTICA } ---     
@@ -477,7 +594,9 @@ def cl():
 def rl():
     return render_template('regresion_logistica.html')
 
-
+@app.route('/arboles_decision')
+def ad():
+    return render_template('arboles_decision.html')
 
 
 

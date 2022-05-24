@@ -1,18 +1,19 @@
 {% extends './base.html' %}
 
-{% block title%}Métricas de distancia{% endblock%}
+{% block title%}Árboles de decisión{% endblock%}
 
 {% block navbar%}
     <li class="nav-item">
         <a class="nav-link" aria-current="page" href="/"><i class="fa-solid fa-house me-2"></i>Inicio</a>
     </li>
     <li class="nav-item dropdown">
+        
         <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fa-solid fa-toolbox me-2"></i> Herramientas
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="/metricas_distancia"><i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia"></i> <i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
             <li><a class="dropdown-item" href="/clustering"><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</a></li>
             <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i>Regresión logística</a></li>
             <li><a class="dropdown-item" href="/arboles_decision"><i class="fa-solid fa-tree ms-2 me-4"></i>Árboles de decisión</a></li> 
@@ -26,10 +27,8 @@
     <header class="jumbotron">
         <div class="container-fluid">
             <div class="row row-header">
-                
-                <div class="col-12 col-sm-6">
-                    <h1><i class="fa-solid fa-pen-ruler me-4"></i>Métricas de distancia</h1>
-                    
+                <div class="col-12">
+                    <h1><i class="fa-solid fa-tree me-4"></i>Árboles de decisión</a></h1>
                 </div>
             </div>
         </div>
@@ -43,77 +42,56 @@
 {% block body %}
    
     <div class="row">
-        
+      
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-2"></i></a></li>
-            <li class="breadcrumb-item"><a href="/metricas_distancia"><i class="fa-solid fa-pen-ruler me-2"></i>Métricas de distancia</a></li>
-            <li class="breadcrumb-item active"><i class="fa-solid fa-bullhorn me-2"></i>Resultados</li>
+            <li class="breadcrumb-item active"><i class="fa-solid fa-tree me-2"></i>Árboles de decisión</li>
         </ol>
     </div>
-   
-    <div class="row">
-        <h2><i class="fa-solid fa-bullhorn me-4"></i>RESULTADOS</h2>
-    </div>       
 
     <div class="row">
-        <h3>Matriz de distancia  <strong>{{metrica}}</strong> </h3>
-        <div class="table-responsive-sm">
-            {% for table in tables %}
-                {{ table|safe }}
-            {% endfor %}
-        </div>
-
-
+        <h3><i class="fa-regular fa-circle-question me-2"></i>¿Qué son los árboles de decisión? </h3>
+        <p class="d-none d-sm-block"> 
+            
+        </p>
+        <h3 class="text-center">
+            
+            
+        </h3>
+         <b></b> 
         
-    </div>   
+    </div>
     
+  
+
     <!-- Button Modal -->
-    <button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form">Volver a calcular las métricas de distancia</button>
+    <button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form"> <i class="fa-solid fa-upload me-2"></i> Subir archivo CSV </button>
     <!-- Modal Content -->
     <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body p-0">
                     <div class="card  p-3 p-lg-4">
-                        
-                        <div class="card-header text-center ">
-                            <h4>Métricas de distancia</h4>
+                        <div class="card-header  text-center ">
+                            <h4>Árboles de decisión</h4>
                             <span>Sube tu archivo CSV e introduce los parámetros</span>
                         </div>
                         <div class="card-body p-0 pl-lg-3">
-                            <form action="/metricas_distancia/resultados" method="POST" enctype="multipart/form-data">
+                            <form action="/arboles_decision/parametros" method="POST" enctype="multipart/form-data">
                                 <!-- Form -->
-                                <label for="md_csvfile">Archivo CSV</label>
+                                <label for="ad_csvfile">Archivo CSV</label>
                                 <div class="form-group mb-4">
                                     <div class="input-group">     
                                         <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-file"></i></span>
-                                        <input class="form-control" type = "file" id="md_csvfile" name="md_csvfile" accept=".csv" required/>
+                                        <input class="form-control" type = "file" id="ad_csvfile" name="ad_csvfile" accept=".csv" required/>
                                     </div>
-                                </div>
-                               
-                                <!-- Form -->
-                                <label for="distancia">Métrica de distancia</label>
-                                <div class="form-group mb-4">
-                                   
-                                    <div class="input-group"> 
-                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-bars"></i></span>
-                                        <select class="form-select" name="distancia" aria-label="metricas" required>
-                                            <option value="1">Distancia Euclidiana (Euclídea)</option>
-                                            <option value="2">Distancia de Chebyshev</option>
-                                            <option value="3">Distancia de Manhattan (Geometría del taxista)</option>
-                                            <option value="4">Distancia de Minkowsky</option>
-                                        </select>  
-                                    </div>
-                                     
                                 </div>
                                 
-                               
-
+                                <!-- End of Form -->
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-dark">Obtener matriz de distancias</button>
+                                    <button type="submit" class="btn btn-dark">Seleccionar las características</button>
                                 </div>
                             </form>
-                           
                         </div>
                     </div>
                 </div>
@@ -121,12 +99,10 @@
         </div>
     </div>
     <!-- End of Modal Content -->
+   
     
-        
-    
+
     
 {% endblock %}
-
-
 
 

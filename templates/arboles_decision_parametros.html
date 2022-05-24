@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block title%}Regresión logística{% endblock%}
+{% block title%}Árboles de decisión{% endblock%}
 
 {% block navbar%}
     <li class="nav-item">
@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="row row-header">
                 <div class="col-12">
-                    <h1><i class="fa-solid fa-chart-line me-4"></i></i>Regresión logística</h1>
+                    <h1><i class="fa-solid fa-tree me-4"></i>Árboles de decisión</a></h1>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
       
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-2"></i></a></li>
-            <li class="breadcrumb-item"><a href="/regresion_logistica">  <i class="fa-solid fa-chart-line me-2"></i>Regresión logística</a></li>
+            <li class="breadcrumb-item"><a href="/arboles_decision">  <i class="fa-solid fa-tree me-2"></i>Árboles de decisión</a></li>
             <li class="breadcrumb-item active"><i class="fa-solid fa-gear me-2"></i>Parámetros</li>
        
         </ol>
@@ -65,7 +65,7 @@
 
 
 
-        <form action="/regresion_logistica/resultados" method="POST" enctype="multipart/form-data">
+        <form action="/arboles_decision/resultados" method="POST" enctype="multipart/form-data">
             <!-- Form -->
             
             <label for="colum[]">Selecciona las columnas que desea eliminar</label>
@@ -82,6 +82,51 @@
                 </div>
             </div>
 
+            <label for="tipoArbol">Tipo de árbol</label>
+            <div class="form-group mb-4">
+                <div class="input-group">
+                        
+                    <select class="form-select" name="tipoArbol" aria-label="Default select example">
+                        
+                        <option value="1">Regresión</option>
+                        <option value="2">Clasificación</option>
+                        
+                    </select>
+                
+                    
+                </div>
+            </div>
+
+            <!-- Form -->
+            <label for="max_depth">Máxima profundidad del árbol (max_depth)</label>
+            <div class="form-group mb-4">
+                <div class="input-group">
+                    <input type="range" class="form-range" min="1" max="1000"  value="100" step="1" name="max_depth" oninput="this.nextElementSibling.value = this.value">
+                    <output>100</output>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <label for="min_samples_split">Cantidad mínima de datos en los nodos de decisión(min_samples_split)</label>
+            <div class="form-group mb-4">
+                
+                <div class="input-group">
+                    <input type="range" class="form-range" min="2" max="100"  value="4" step="1" name="min_samples_split" oninput="this.nextElementSibling.value = this.value">
+                    <output>4</output>
+                </div>
+            </div>
+             
+            <!-- Form -->
+            <label for="min_samples_leaf">Cantidad mínima de datos en los nodos hoja(min_samples_leaf.)</label>
+            <div class="form-group mb-4">
+                
+                <div class="input-group">
+                    <input type="range" class="form-range" min="2" max="100"  value="4" step="1" name="min_samples_leaf" oninput="this.nextElementSibling.value = this.value">
+                    <output>4</output>
+                </div>
+            </div>
+           
+
 
             <label for="v_clase">Variable a predecir</label>
             <div class="form-group mb-4">
@@ -96,11 +141,11 @@
                 </div>
             </div>
          
-            <label for="rl_csvfile">Vuelve a subir el archivo <b>{{filename}}</b></label>
+            <label for="ad_csvfile">Vuelve a subir el archivo <b>{{filename}}</b></label>
             <div class="form-group mb-4">
                 <div class="input-group">     
                     <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-file"></i></span>
-                    <input class="form-control" type = "file" id="rl_csvfile" name="rl_csvfile" accept=".csv" required/>
+                    <input class="form-control" type = "file" id="ad_csvfile" name="ad_csvfile" accept=".csv" required/>
                 </div>
             </div>
 

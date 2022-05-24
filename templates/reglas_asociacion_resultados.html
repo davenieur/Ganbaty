@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block title%}GANBATY: Reglas de asociación{% endblock%}
+{% block title%}Reglas de asociación{% endblock%}
 
 {% block navbar%}
     <li class="nav-item">
@@ -142,47 +142,53 @@
        
     </div>   
     <!-- Button Modal -->
-    <button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form">Volver a obtener reglas de asociación</button>
+    <button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form"> <i class="fa-solid fa-upload me-2"></i> Subir archivo CSV </button>
     <!-- Modal Content -->
     <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body p-0">
                     <div class="card  p-3 p-lg-4">
-                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <div class="card-header border-0 text-center pb-0">
-                            <h2 class="h4">Reglas de asociación</h2>
-                            <span>Introduce los parámetros</span>
+                        <div class="card-header  text-center ">
+                            <h4>Reglas de asociación</h4>
+                            <span>Sube tu archivo CSV e introduce los parámetros</span>
                         </div>
                         <div class="card-body p-0 pl-lg-3">
                             <form action="/reglas_asociacion/resultados" method="POST" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <!-- Form -->
-                                    <div class="form-group mb-4">
-                                        <div class="input-group">
-                                            <div class="form-group" >
-                                                <label for="ra_csvfile">Archivo CSV</label>
-                                                <input type = "file" id="ra_csvfile" name="ra_csvfile" accept=".csv" required/>
-                                            </div>
-                                        </div>
+                                <!-- Form -->
+                                <label for="ra_csvfile">Archivo CSV</label>
+                                <div class="form-group mb-4">
+                                    <div class="input-group">     
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-file"></i></span>
+                                        <input class="form-control" type = "file" id="ra_csvfile" name="ra_csvfile" accept=".csv" required/>
                                     </div>
-                                    <div class="form-group mb-4">
-                                        <label for="soporte">Soporte mínimo (%)</label>
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" name="soporte" min="0" max="100" step="any" required title="El soporte mínimo es de 0 y máximo de 100">
-                                        </div>
+                                </div>
+                                <!-- End of Form -->
+                             
+                                <!-- Form -->
+                                <label for="soporte">Soporte mínimo (%)</label>
+                                <div class="form-group mb-4">
+                                    
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-keyboard"></i></span>
+                                        
+                                        <input type="number" class="form-control" name="soporte" min="0" max="100" step="any" required title="El soporte mínimo es de 0 y máximo de 100">
                                     </div>
-                                    <div class="form-group mb-4">
-                                        <label for="confianza">Confianza (%)</label>
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" name="confianza"  min="0" max="100" step="any" required title="La confianza mínima es de 0 y máxima de 100">
-                                        </div>
+                                </div>
+                                <label for="confianza">Confianza (%)</label>
+                                <div class="form-group mb-4">
+                                    
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-keyboard"></i></span>
+                                        <input type="number" class="form-control" name="confianza"  min="0" max="100" step="any" required title="La confianza mínima es de 0 y máxima de 100">
                                     </div>
-                                    <div class="form-group mb-4">
-                                        <label for="elevacion">Elevación</label>
-                                        <div class="input-group">
-                                            <input type="number" class="form-control" name="elevacion"  min="0" step="any" required title="La elevación mínima es de 0. Mayor a 1 (recomendable)">
-                                        </div>
+                                </div>
+                                <label for="elevacion">Elevación</label>
+                                <div class="form-group mb-4">
+                                    
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-keyboard"></i></span>
+                                        <input type="number" class="form-control" name="elevacion"  min="0" required step="any" title="La elevación mínima es de 0. Mayor a 1 (recomendable)">
                                     </div>
                                 </div>
 

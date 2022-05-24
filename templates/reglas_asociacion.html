@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block title%}GANBATY: Reglas de asociación{% endblock%}
+{% block title%}Reglas de asociación{% endblock%}
 
 {% block navbar%}
     <li class="nav-item">
@@ -143,7 +143,7 @@
                         </div>
                         <div class="card-body p-0 pl-lg-3">
                             <form action="/reglas_asociacion/resultados" method="POST" enctype="multipart/form-data">
-                                <!-- Form -->
+                        
                                 <label for="ra_csvfile">Archivo CSV</label>
                                 <div class="form-group mb-4">
                                     <div class="input-group">     
@@ -151,9 +151,7 @@
                                         <input class="form-control" type = "file" id="ra_csvfile" name="ra_csvfile" accept=".csv" required/>
                                     </div>
                                 </div>
-                                <!-- End of Form -->
-                             
-                                <!-- Form -->
+                                
                                 <label for="soporte">Soporte mínimo (%)</label>
                                 <div class="form-group mb-4">
                                     
@@ -163,6 +161,7 @@
                                         <input type="number" class="form-control" name="soporte" min="0" max="100" step="any" required title="El soporte mínimo es de 0 y máximo de 100">
                                     </div>
                                 </div>
+
                                 <label for="confianza">Confianza (%)</label>
                                 <div class="form-group mb-4">
                                     
@@ -171,6 +170,7 @@
                                         <input type="number" class="form-control" name="confianza"  min="0" max="100" step="any" required title="La confianza mínima es de 0 y máxima de 100">
                                     </div>
                                 </div>
+
                                 <label for="elevacion">Elevación</label>
                                 <div class="form-group mb-4">
                                     
@@ -180,7 +180,6 @@
                                     </div>
                                 </div>
                               
-
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-dark">Obtener reglas de asociación</button>
                                 </div>
