@@ -37,6 +37,8 @@ body{
 
 b{
     color: #28b78d;
+    font-size: large;
+    text-transform:uppercase;
 }
 
 .submit{
@@ -203,7 +205,7 @@ table.dataframe, .dataframe th, .dataframe td {
     border-left: 1px solid #243743; 
     text-align:center;
     padding: 5px;
-    font-size: 0.9em;
+    font-size: 1em;
   }
   
   thead{

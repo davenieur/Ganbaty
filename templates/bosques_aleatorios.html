@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block title%}Árboles de decisión{% endblock%}
+{% block title%}Bosques aleatorios{% endblock%}
 
 {% block navbar%}
     <li class="nav-item">
@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="row row-header">
                 <div class="col-12">
-                    <h1><i class="fa-solid fa-tree me-4"></i>Árboles de decisión</h1>
+                    <h1><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-4"></i>Bosques aleatorios</h1>
                 </div>
             </div>
         </div>
@@ -45,38 +45,20 @@
       
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-2"></i></a></li>
-            <li class="breadcrumb-item active"><i class="fa-solid fa-tree me-2"></i>Árboles de decisión</li>
+            <li class="breadcrumb-item active"><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-2"></i>Bosques aleatorios</li>
         </ol>
     </div>
 
     <div class="row">
-        <h3><i class="fa-regular fa-circle-question me-2"></i>¿Qué son los árboles de decisión? </h3>
+        <h3><i class="fa-regular fa-circle-question me-2"></i>¿Qué son los bosques aleatorios? </h3>
         <p class="d-none d-sm-block">
-            Es uno de los algoritmos más utilizados en el aprendizaje automático supervisado. Aportan claridad (despliegan los resultados en
-            profundidad, de mayor a menor detalle). Su estructura es la siguiente:
+            Son una variación moderna, que agrupan varios árboles de
+            decisión para producir un modelo generalizado con el objetivo de reducir la tendencia al
+            sobreajuste.
         </p> 
-        <div>
-            <ul>
-                <li> 
-                    <strong>Nodo principal:</strong>  Representa toda la población
-                    (todos los datos) que posteriormente se dividirá.
-                </li>
-                <li> 
-                    <strong>Nodo de decisión:</strong>  Se encarga de dividir los datos,
-                    dependiendo de una decisión.
-                </li>
-                <li> 
-                    <strong>Nodo hoja:</strong> Es donde recae la decisión final.
-                </li>
-                <li> 
-                    <strong>Profundidad:</strong> La profundidad indica los niveles que
-                    tiene el árbol de decisión.
-                </li>
-            </ul>
-        </div>
-    
+        
         <p class="d-none d-sm-block">
-            Este algoritmo emplea cuatro parámetros:
+            Este algoritmo emplea seis parámetros:
         </p>
         <div class="accordion" id="accordionExample2">
             <div class="accordion-item">
@@ -139,6 +121,36 @@
                     </div>
                 </div>
             </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour3">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour3" aria-expanded="false" aria-controls="collapseFour3">
+                    n_estimators
+                </button>
+                </h2>
+                <div id="collapseFour3" class="accordion-collapse collapse" aria-labelledby="headingFour3" data-bs-parent="#accordionExample2">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block">
+                            Indica el número de árboles que va a tener el bosque aleatorio. Normalmente,
+                            cuantos más árboles es mejor, pero a partir de cierto punto deja de mejorar y se vuelve más lento.
+                            El valor por defecto es 100 árboles.
+                        </p>  
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour4">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour4" aria-expanded="false" aria-controls="collapseFour4">
+                    max_leaf_nodes
+                </button>
+                </h2>
+                <div id="collapseFour4" class="accordion-collapse collapse" aria-labelledby="headingFour4" data-bs-parent="#accordionExample2">
+                    <div class="accordion-body">
+                        <p class="d-none d-sm-block">
+                            Indica el número máximo de nodos finales.
+                        </p>  
+                    </div>
+                </div>
+            </div>
         </div>
         
     </div>
@@ -154,17 +166,17 @@
                 <div class="modal-body p-0">
                     <div class="card  p-3 p-lg-4">
                         <div class="card-header  text-center ">
-                            <h4>Árboles de decisión</h4>
+                            <h4>Bosques aleatorios</h4>
                             <span>Sube tu archivo CSV e introduce los parámetros</span>
                         </div>
                         <div class="card-body p-0 pl-lg-3">
-                            <form action="/arboles_decision/parametros" method="POST" enctype="multipart/form-data">
+                            <form action="/bosques_aleatorios/parametros" method="POST" enctype="multipart/form-data">
                                 <!-- Form -->
-                                <label for="ad_csvfile">Archivo CSV</label>
+                                <label for="ba_csvfile">Archivo CSV</label>
                                 <div class="form-group mb-4">
                                     <div class="input-group">     
                                         <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-file"></i></span>
-                                        <input class="form-control" type = "file" id="ad_csvfile" name="ad_csvfile" accept=".csv" required/>
+                                        <input class="form-control" type = "file" id="ba_csvfile" name="ba_csvfile" accept=".csv" required/>
                                     </div>
                                 </div>
                                 

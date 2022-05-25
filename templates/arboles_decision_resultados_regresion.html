@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block title%}Regresión logística{% endblock%}
+{% block title%}Árboles de decisión{% endblock%}
 
 {% block navbar%}
     
@@ -27,8 +27,8 @@
     <header class="jumbotron">
         <div class="container-fluid">
             <div class="row row-header">
-                <div class="col-12 col-sm-6">
-                    <h1><i class="fa-solid fa-chart-line me-4"></i></i>Regresión logística</h1>
+                <div class="col-12">
+                    <h1><i class="fa-solid fa-tree me-4"></i>Árboles de decisión</h1>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
         
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-1"></i></a></li>
-            <li class="breadcrumb-item"><a href="/regresion_logistica"><i class="fa-solid fa-chart-line me-2"></i>Regresión logística</a></li>
+            <li class="breadcrumb-item"><a href="/arboles_decision"><i class="fa-solid fa-tree me-2"></i>Árboles de decisión</a></li>
             <li class="breadcrumb-item active"><i class="fa-solid fa-bullhorn me-2"></i>Resultados</li>
         
         </ol>
@@ -56,12 +56,12 @@
     </div>      
 
     <div class="row">
-        <div class="col-4">
+        <div class="col-3">
             <div>
                 <h3>Score:</h3><b>{{score}}</b>
             </div>
         </div>   
-        <div class="col-4">
+        <div class="col-3">
             <div class="mb-4">
                 <div>
                     <h3>Variables predictoras:</h3>
@@ -83,63 +83,48 @@
                 </div>
                 <div>
                     <b>
-                        {{Y}}
-    
+                        <li>{{Y}}</li>
                     </b>
                 </div>
             </div>
-            
-
         </div>
-
-
-        <div class="col-4">
-            <div>
-                <h3>Matriz de clasificación:</h3>
-            </div>
-            <div>
-                {% for table in tables %}
-                    {{ table|safe }}
-                {% endfor %}
-            </div>
-        </div>        
-    </div>   
-
-    <!-- Button Modal -->
-    <button type="button" class="btn btn-block btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal-form"> <i class="fa-solid fa-upload me-2"></i> Volver a realizar la regresión logística </button>
-    <!-- Modal Content -->
-    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body p-0">
-                    <div class="card  p-3 p-lg-4">
-                        <div class="card-header  text-center ">
-                            <h4>Regresión logística</h4>
-                            <span>Sube tu archivo CSV</span>
-                        </div>
-                        <div class="card-body p-0 pl-lg-3">
-                            <form action="/regresion_logistica/parametros" method="POST" enctype="multipart/form-data">
-                                <!-- Form -->
-                                <label for="rl_csvfile">Archivo CSV</label>
-                                <div class="form-group mb-4">
-                                    <div class="input-group">     
-                                        <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-file"></i></span>
-                                        <input class="form-control" type = "file" id="rl_csvfile" name="rl_csvfile" accept=".csv" required/>
-                                    </div>
-                                </div>
-                                <!-- End of Form -->
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-dark">Seleccionar las características</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+        <div class="col-3">
+            
+            <div class="mb-4">
+                <div>
+                    <h3>Parámetros:</h3>
                 </div>
+                <div>
+                    <li><b>max_depth:</b> {{max_depth}} </li>
+                    <li><b>min_samples_split:</b> {{min_samples_split}}</li>
+                    <li><b>min_samples_leaf:</b>  {{min_samples_leaf}}</li>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-3">
+            <div>
+                <h3>Parámetros del modelo: </h3>
+            </div>
+            <div >
+                <b>Criterio: </b> {{criterio}}
+            </div>
+            <div >
+                <b>Importancia: </b> {{importancia}}
+            </div>
+            <div >
+                <b>MAE: </b> {{mae}}
+            </div>
+            <div >
+                <b>MSE: </b> {{mse}}
+            </div>
+            <div >
+                <b>RMSE: </b> {{rmse}}
             </div>
         </div>
     </div>
-    <!-- End of Modal Content -->
-    
+
+
 {% endblock %}
 
 

@@ -53,228 +53,154 @@ from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn import model_selection
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+# --- Para bosques aleatorios
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestRegressor
 
 # ---------------------------- { AQUÍ COMIENZA LA PARTE DE FLASK } ----------------------------
 app = Flask(__name__)
 
 ALLOWED_EXTENSIONS = set(['csv'])
 
-                                # ---{ ÁRBOLES DE DECISIÓN } ---
-@app.route('/arboles_decision/resultados',methods=['GET', 'POST'])
-def arboles_decision():
+# --- { MAIN } ---
+if __name__ == '_main_':
+    
+    app.run(host='0.0.0.0', port=80)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+# --- { REGLAS DE ASOCIACIÓN } ---
+@app.route('/reglas_asociacion')
+def ra():
+    return render_template('reglas_asociacion.html')
+
+@app.route('/reglas_asociacion/resultados',methods=['GET', 'POST'])
+def ra_upload():
     if request.method == 'POST':
         #Importamos los datos
-        ad_file = request.files["ad_csvfile"]
+        ra_file = request.files["ra_csvfile"]
 
         # Obtenemos el nombre del archivo
-        filename = secure_filename(ad_file.filename)
+        filename = secure_filename(ra_file.filename)
 
         # Separamos el nombre del archivo
         file = filename.split('.')
         
         if file[1] in ALLOWED_EXTENSIONS:
-            df = pd.read_csv(ad_file)
 
-            # Obtenemos las variables predictorias
-            ints = [int(request.form['v_clase'])-1]
+             # Leemos los datos
+            df = pd.read_csv(ra_file,header=None)
 
-            for element in request.form.getlist('colum[]'):
-                ints.append(int(element)-1)
-
-
-            if int(request.form['tipoArbol']) == 1:
-                
-                # Variable clase
-                Y = np.array(df[[df.columns[int(request.form['v_clase'])-1]]])
-
-                # Eliminamos las columnas elegidas
-                df = df.drop(df.columns[ints], axis='columns') 
-
-                # Variables predictoras
-                X = np.array(df[df.columns.values.tolist()])
-
-                # Separamos los datos
-                X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X, Y, 
-                                                                    test_size = 0.2, 
-                                                                    random_state = 1234, 
-                                                                    shuffle = True)
-
-                # Entrenamos el modelo
-                PronosticoAD = DecisionTreeRegressor(random_state=0)
-                PronosticoAD.fit(X_train, Y_train)
-
-                #Se genera el pronóstico
-                Y_Pronostico = PronosticoAD.predict(X_test)
-
-                score = r2_score(Y_test, Y_Pronostico)
+            #Se incluyen todas las transacciones en una sola lista
+            Transacciones = df.values.reshape(-1).tolist() #-1 significa 'dimensión desconocida'
             
-                return render_template('arboles_decision_resultados.html', score = score, 
-                    predictoras = df.columns.values.tolist(), tam = len(df.columns.values.tolist())-1)
+            #Se crea una matriz (dataframe) usando la lista y se incluye una columna 'Frecuencia'
+            Lista = pd.DataFrame(Transacciones)
+            Lista['Frecuencia'] = 1
+
+            #Se agrupa los elementos
+            Lista = Lista.groupby(by=[0], as_index=False).count().sort_values(by=['Frecuencia'], ascending=True) #Conteo
+            Lista['Porcentaje'] = (Lista['Frecuencia'] / Lista['Frecuencia'].sum()) #Porcentaje
+            Lista = Lista.rename(columns={0 : 'Item'})
             
-    else:   
+
+            #Se crea una lista de listas a partir del dataframe y se remueven los 'NaN'
+            #level=0 especifica desde el primer índice
+            TransaccionesLista = df.stack().groupby(level=0).apply(list).tolist()
+
+            soporte = request.form['soporte']
+            confianza = request.form['confianza']
+            elevacion = request.form['elevacion']
+
+            Reglas = ap(TransaccionesLista,
+                    min_support = float(soporte)/100,
+                    min_confidence = float(confianza)/100,
+                    min_lift = float(elevacion))
+
+            Resultados = list(Reglas)
+            
+            return render_template('reglas_asociacion_resultados.html',filename = filename, Resultados = Resultados,soporte = soporte, confianza = confianza, elevacion = elevacion, size = len(Resultados))
+    else:
         
-        return render_template('arboles_decision_resultados.html')
+        return render_template('reglas_asociacion.html')
 
+# --- { METRICAS DE DISTANCIA } ---
+@app.route('/metricas_distancia')
+def md():
+    return render_template('metricas_distancia.html')
 
-
-@app.route('/arboles_decision/parametros',methods=['GET', 'POST'])
-def ad_upload():
+@app.route('/metricas_distancia/resultados',methods=['GET', 'POST'])
+def md_upload():
     if request.method == 'POST':
         #Importamos los datos
-        ad_file = request.files["ad_csvfile"]
+        md_file = request.files["md_csvfile"]
 
         # Obtenemos el nombre del archivo
-        filename = secure_filename(ad_file.filename)
+        filename = secure_filename(md_file.filename)
 
         # Separamos el nombre del archivo
         file = filename.split('.')
         
         if file[1] in ALLOWED_EXTENSIONS:
-            df = pd.read_csv(ad_file)
-
-            # Preparamos la imagen para mostrarla en la página web
-            img = BytesIO()
-
-            Corrdf = df.corr(method='pearson')
-            plt.figure(figsize=(14,14))
-            MatrizInf = np.triu(Corrdf)
-            sns.heatmap(Corrdf, cmap='RdBu_r', annot=True, mask=MatrizInf)
-
-
-            plt.savefig(img, format='png')
-            plt.close()
-            img.seek(0)
-            plot_url = base64.b64encode(img.getvalue()).decode('utf8')
-
-
-            # Obtenemos el nombre de las columnas del dataframe para la selección manual
-            columns_names = df.columns.values
-
-            return render_template('arboles_decision_parametros.html',columns_names_list = list(columns_names), 
-                plot_url=plot_url, filename = filename)
-        
-    else:   
-        
-        return render_template('arboles_decision_parametros.html')
-
-
-
-
-
-# --- { REGRESIÓN LOGÍSTICA } ---     
-@app.route('/regresion_logistica/pronostico',methods=['GET', 'POST'])
-def regresion_logistica_pronostico():
-    if request.method == 'POST':
-        ints = []
-        for element in request.form.getlist('colum[]'):
-
-
-            var = request.form['variable1']
-        # Obtenemos las variables predictorias
-        #ints = [int(request.form['v_clase'])-1]
-        #for element in request.form.getlist('colum[]'):
-        #    ints.append(int(element)-1)
-
-           
-        return render_template('regresion_logistica_pronostico.html',var = var)
-
-
-
-
-
-@app.route('/regresion_logistica/resultados',methods=['GET', 'POST'])
-def regresion_logistica():
-    if request.method == 'POST':
-        #Importamos los datos
-        rl_file = request.files["rl_csvfile"]
-
-        # Obtenemos el nombre del archivo
-        filename = secure_filename(rl_file.filename)
-
-        # Separamos el nombre del archivo
-        file = filename.split('.')
-        
-        if file[1] in ALLOWED_EXTENSIONS:
-            df = pd.read_csv(rl_file)
+            df = pd.read_csv(md_file)
 
             # Borramos las filas con valores nulos
             df = df.dropna()
 
-            # Obtenemos la variable clase
-            valores = df[df.columns[int(request.form['v_clase'])-1]].unique()
-
-            # Convertimos valores cualitativos a cuantitativos de la variable clase
-            df = df.replace({valores[0]: 0, valores[1]: 1})
+            estandarizar = StandardScaler()                         # Se instancia el objeto StandardScaler o MinMaxScaler 
+            MEstandarizada = estandarizar.fit_transform(df)         # Se calculan la media y desviación y se escalan los datos
             
-            # Variable clase
-            Y = np.array(df[[df.columns[int(request.form['v_clase'])-1]]])
-
-            # Obtenemos las variables predictorias
-            ints = [int(request.form['v_clase'])-1]
-
-            for element in request.form.getlist('colum[]'):
-                ints.append(int(element)-1)
-
-            # Eliminamos las columnas elegidas
-            df = df.drop(df.columns[ints], axis='columns') 
-
-            # Variables predictoras
-            X = np.array(df[df.columns.values.tolist()])
- 
-            # Regresión logística
-            X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, 
-                                                                                test_size = 0.2, 
-                                                                                random_state = 1234,
-                                                                                shuffle = True)
-
-            #Se entrena el modelo a partir de los datos de entrada
-            Clasificacion = linear_model.LogisticRegression()
-            Clasificacion.fit(X_train, Y_train)
-
-            #Predicciones probabilísticas de los datos de prueba
-            Probabilidad = Clasificacion.predict_proba(X_validation)
-            pd.DataFrame(Probabilidad)
+            opcion = int(request.form['distancia'])
             
-            #Predicciones con clasificación final 
-            Predicciones = Clasificacion.predict(X_validation)
-            pd.DataFrame(Predicciones)
+            if opcion == 1:
+                DstEuclidiana = cdist(MEstandarizada, MEstandarizada, metric='euclidean')
+                MEuclidiana = pd.DataFrame(DstEuclidiana)
+                return render_template('metricas_distancia_resultados.html',  metrica = "Euclidiana",
+                    tables=[ MEuclidiana.to_html(classes='data')], titles=MEuclidiana.columns.values)
+            elif opcion == 2:
+                DstChebyshev = cdist(MEstandarizada, MEstandarizada, metric='chebyshev')
+                MChebyshev = pd.DataFrame(DstChebyshev)
+                return render_template('metricas_distancia_resultados.html',  metrica = "Chebyshev",
+                    tables=[ MChebyshev.to_html(classes='data')], titles=MChebyshev.columns.values)
+            elif opcion == 3:
+                DstManhattan = cdist(MEstandarizada, MEstandarizada, metric='cityblock')
+                MManhattan = pd.DataFrame(DstManhattan)
+                return render_template('metricas_distancia_resultados.html',  metrica = "Manhattan",
+                    tables=[ MManhattan.to_html(classes='data')], titles=MManhattan.columns.values)
+            elif opcion ==4:
+                DstMinkowski = cdist(MEstandarizada, MEstandarizada, metric='minkowski', p=1.5)
+                MMinkowski = pd.DataFrame(DstMinkowski)
+                return render_template('metricas_distancia_resultados.html', metrica = "Minkowski",
+                    tables=[ MMinkowski.to_html(classes='data')], titles=MMinkowski.columns.values)           
+            return render_template('metricas_distancia_resultados.html')           
+    
+    else:      
+        return render_template('metricas_distancia.html')
 
-            #Se calcula la exactitud promedio de la validación
-            score = Clasificacion.score(X_validation, Y_validation)
+# --- { CLUSTERING } ---  
+@app.route('/clustering')
+def cl():
+    return render_template('clustering.html')
 
-            #Matriz de clasificación
-            Y_Clasificacion = Clasificacion.predict(X_validation)
-            Matriz_Clasificacion = pd.crosstab(Y_validation.ravel(), 
-                                            Y_Clasificacion, 
-                                            rownames=['Real'], 
-                                            colnames=['Clasificación']) 
-            
-            #Reporte de la clasificación
-            reporte = classification_report(Y_validation, Y_Clasificacion,output_dict='true')
-            
-            return render_template('regresion_logistica_resultados.html', score = score, 
-                tables=[ Matriz_Clasificacion.to_html(classes='data')], titles=Matriz_Clasificacion.columns.values,
-                valores = valores, reporte = reporte, predictoras = df.columns.values.tolist(), tam = len(df.columns.values.tolist())-1)
-            
-    else:   
-        
-        return render_template('regresion_logistica_resultados.html')
-
-
-@app.route('/regresion_logistica/parametros',methods=['GET', 'POST'])
-def rl_upload():
+@app.route('/clustering/parametros',methods=['GET', 'POST'])
+def c_upload():
     if request.method == 'POST':
         #Importamos los datos
-        rl_file = request.files["rl_csvfile"]
+        c_file = request.files["c_csvfile"]
 
         # Obtenemos el nombre del archivo
-        filename = secure_filename(rl_file.filename)
+        filename = secure_filename(c_file.filename)
 
         # Separamos el nombre del archivo
         file = filename.split('.')
         
         if file[1] in ALLOWED_EXTENSIONS:
-            df = pd.read_csv(rl_file)
+            df = pd.read_csv(c_file)
 
             # Preparamos la imagen para mostrarla en la página web
             img = BytesIO()
@@ -294,17 +220,14 @@ def rl_upload():
             # Obtenemos el nombre de las columnas del dataframe para la selección manual
             columns_names = df.columns.values
 
-            return render_template('regresion_logistica_parametros.html',columns_names_list = list(columns_names), 
+            return render_template('clustering_parametros.html',columns_names_list = list(columns_names), 
                 plot_url=plot_url, filename = filename)
-        
+            
     else:   
         
-        return render_template('regresion_logistica_parametros.html')
+        return render_template('clustering_parametros.html')
 
 
-
-
-# --- { CLUSTERING } ---  
 @app.route('/clustering/resultados',methods=['GET', 'POST'])
 def clustering():
     if request.method == 'POST':
@@ -427,22 +350,25 @@ def clustering():
         
         return render_template('clustering_resultados.html')
 
+# --- { REGRESIÓN LOGÍSTICA } ---
+@app.route('/regresion_logistica')
+def rl():
+    return render_template('regresion_logistica.html')
 
-
-@app.route('/clustering/parametros',methods=['GET', 'POST'])
-def c_upload():
+@app.route('/regresion_logistica/parametros',methods=['GET', 'POST'])
+def rl_upload():
     if request.method == 'POST':
         #Importamos los datos
-        c_file = request.files["c_csvfile"]
+        rl_file = request.files["rl_csvfile"]
 
         # Obtenemos el nombre del archivo
-        filename = secure_filename(c_file.filename)
+        filename = secure_filename(rl_file.filename)
 
         # Separamos el nombre del archivo
         file = filename.split('.')
         
         if file[1] in ALLOWED_EXTENSIONS:
-            df = pd.read_csv(c_file)
+            df = pd.read_csv(rl_file)
 
             # Preparamos la imagen para mostrarla en la página web
             img = BytesIO()
@@ -462,149 +388,384 @@ def c_upload():
             # Obtenemos el nombre de las columnas del dataframe para la selección manual
             columns_names = df.columns.values
 
-            return render_template('clustering_parametros.html',columns_names_list = list(columns_names), 
+            return render_template('regresion_logistica_parametros.html',columns_names_list = list(columns_names), 
                 plot_url=plot_url, filename = filename)
-            
+        
     else:   
         
-        return render_template('clustering_parametros.html')
-    
+        return render_template('regresion_logistica_parametros.html')
 
-# --- { METRICAS DE DISTANCIA } ---
-@app.route('/metricas_distancia/resultados',methods=['GET', 'POST'])
-def md_upload():
+
+@app.route('/regresion_logistica/resultados',methods=['GET', 'POST'])
+def regresion_logistica():
     if request.method == 'POST':
         #Importamos los datos
-        md_file = request.files["md_csvfile"]
+        rl_file = request.files["rl_csvfile"]
 
         # Obtenemos el nombre del archivo
-        filename = secure_filename(md_file.filename)
+        filename = secure_filename(rl_file.filename)
 
         # Separamos el nombre del archivo
         file = filename.split('.')
         
         if file[1] in ALLOWED_EXTENSIONS:
-            df = pd.read_csv(md_file)
+            df = pd.read_csv(rl_file)
 
             # Borramos las filas con valores nulos
             df = df.dropna()
 
-            estandarizar = StandardScaler()                         # Se instancia el objeto StandardScaler o MinMaxScaler 
-            MEstandarizada = estandarizar.fit_transform(df)         # Se calculan la media y desviación y se escalan los datos
-            
-            opcion = int(request.form['distancia'])
-            
-            if opcion == 1:
-                DstEuclidiana = cdist(MEstandarizada, MEstandarizada, metric='euclidean')
-                MEuclidiana = pd.DataFrame(DstEuclidiana)
-                return render_template('metricas_distancia_resultados.html',  metrica = "Euclidiana",
-                    tables=[ MEuclidiana.to_html(classes='data')], titles=MEuclidiana.columns.values)
-            elif opcion == 2:
-                DstChebyshev = cdist(MEstandarizada, MEstandarizada, metric='chebyshev')
-                MChebyshev = pd.DataFrame(DstChebyshev)
-                return render_template('metricas_distancia_resultados.html',  metrica = "Chebyshev",
-                    tables=[ MChebyshev.to_html(classes='data')], titles=MChebyshev.columns.values)
-            elif opcion == 3:
-                DstManhattan = cdist(MEstandarizada, MEstandarizada, metric='cityblock')
-                MManhattan = pd.DataFrame(DstManhattan)
-                return render_template('metricas_distancia_resultados.html',  metrica = "Manhattan",
-                    tables=[ MManhattan.to_html(classes='data')], titles=MManhattan.columns.values)
-            elif opcion ==4:
-                DstMinkowski = cdist(MEstandarizada, MEstandarizada, metric='minkowski', p=1.5)
-                MMinkowski = pd.DataFrame(DstMinkowski)
-                return render_template('metricas_distancia_resultados.html', metrica = "Minkowski",
-                    tables=[ MMinkowski.to_html(classes='data')], titles=MMinkowski.columns.values)           
-            return render_template('metricas_distancia_resultados.html')           
-    
-    else:      
-        return render_template('metricas_distancia.html')
+            # Obtenemos los valores de la variable clase
+            valores = df[df.columns[int(request.form['v_clase'])-1]].unique()
 
-# --- { REGLAS DE ASOCIACIÓN } ---
-@app.route('/reglas_asociacion/resultados',methods=['GET', 'POST'])
-def ra_upload():
+            # Variable clase
+            Y = np.array(df[[df.columns[int(request.form['v_clase'])-1]]])
+
+            # Obtenemos las variables predictorias
+            ints = []
+
+            for element in request.form.getlist('colum[]'):
+                ints.append(int(element)-1)
+
+            # Variables predictoras
+            X = df.iloc[:,ints].values  #iloc para seleccionar filas y columnas
+ 
+            # Regresión logística
+            X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, 
+                                                                                test_size = 0.2, 
+                                                                                random_state = 1234,
+                                                                                shuffle = True)
+
+            #Se entrena el modelo a partir de los datos de entrada
+            Clasificacion = linear_model.LogisticRegression()
+            Clasificacion.fit(X_train, Y_train)
+
+            #Predicciones probabilísticas de los datos de prueba
+            Probabilidad = Clasificacion.predict_proba(X_validation)
+            pd.DataFrame(Probabilidad)
+            
+            #Predicciones con clasificación final 
+            Predicciones = Clasificacion.predict(X_validation)
+            pd.DataFrame(Predicciones)
+
+            #Se calcula la exactitud promedio de la validación
+            score = Clasificacion.score(X_validation, Y_validation)
+
+            #Matriz de clasificación
+            Y_Clasificacion = Clasificacion.predict(X_validation)
+            Matriz_Clasificacion = pd.crosstab(Y_validation.ravel(), 
+                                            Y_Clasificacion, 
+                                            rownames=['Real'], 
+                                            colnames=['Clasificación']) 
+            
+            
+            
+            return render_template('regresion_logistica_resultados.html', score = score, 
+                tables=[ Matriz_Clasificacion.to_html(classes='data')], titles=Matriz_Clasificacion.columns.values,
+                valores = valores, X = df.iloc[:,ints], Y = df.columns[int(request.form['v_clase'])-1])
+            
+    else:   
+        
+        return render_template('regresion_logistica_resultados.html')
+
+
+
+
+
+
+# ---{ ÁRBOLES DE DECISIÓN } ---
+@app.route('/arboles_decision')
+def ad():
+    return render_template('arboles_decision.html')
+
+@app.route('/arboles_decision/parametros',methods=['GET', 'POST'])
+def ad_upload():
     if request.method == 'POST':
         #Importamos los datos
-        ra_file = request.files["ra_csvfile"]
+        ad_file = request.files["ad_csvfile"]
 
         # Obtenemos el nombre del archivo
-        filename = secure_filename(ra_file.filename)
+        filename = secure_filename(ad_file.filename)
 
         # Separamos el nombre del archivo
         file = filename.split('.')
         
         if file[1] in ALLOWED_EXTENSIONS:
+            df = pd.read_csv(ad_file)
 
-             # Leemos los datos
-            df = pd.read_csv(ra_file,header=None)
+            # Preparamos la imagen para mostrarla en la página web
+            img = BytesIO()
 
-            #Se incluyen todas las transacciones en una sola lista
-            Transacciones = df.values.reshape(-1).tolist() #-1 significa 'dimensión desconocida'
-            
-            #Se crea una matriz (dataframe) usando la lista y se incluye una columna 'Frecuencia'
-            Lista = pd.DataFrame(Transacciones)
-            Lista['Frecuencia'] = 1
+            Corrdf = df.corr(method='pearson')
+            plt.figure(figsize=(14,14))
+            MatrizInf = np.triu(Corrdf)
+            sns.heatmap(Corrdf, cmap='RdBu_r', annot=True, mask=MatrizInf)
 
-            #Se agrupa los elementos
-            Lista = Lista.groupby(by=[0], as_index=False).count().sort_values(by=['Frecuencia'], ascending=True) #Conteo
-            Lista['Porcentaje'] = (Lista['Frecuencia'] / Lista['Frecuencia'].sum()) #Porcentaje
-            Lista = Lista.rename(columns={0 : 'Item'})
-            
 
-            #Se crea una lista de listas a partir del dataframe y se remueven los 'NaN'
-            #level=0 especifica desde el primer índice
-            TransaccionesLista = df.stack().groupby(level=0).apply(list).tolist()
+            plt.savefig(img, format='png')
+            plt.close()
+            img.seek(0)
+            plot_url = base64.b64encode(img.getvalue()).decode('utf8')
 
-            soporte = request.form['soporte']
-            confianza = request.form['confianza']
-            elevacion = request.form['elevacion']
 
-            Reglas = ap(TransaccionesLista,
-                    min_support = float(soporte)/100,
-                    min_confidence = float(confianza)/100,
-                    min_lift = float(elevacion))
+            # Obtenemos el nombre de las columnas del dataframe para la selección manual
+            columns_names = df.columns.values
 
-            Resultados = list(Reglas)
-            
-            return render_template('reglas_asociacion_resultados.html',filename = filename, Resultados = Resultados,soporte = soporte, confianza = confianza, elevacion = elevacion, size = len(Resultados))
-    else:
+            return render_template('arboles_decision_parametros.html',columns_names_list = list(columns_names), 
+                plot_url=plot_url, filename = filename)
         
-        return render_template('reglas_asociacion.html')
+    else:   
+        
+        return render_template('arboles_decision_parametros.html')
+
+@app.route('/arboles_decision/resultados',methods=['GET', 'POST'])
+def arboles_decision():
+    if request.method == 'POST':
+        #Importamos los datos
+        ad_file = request.files["ad_csvfile"]
+
+        # Obtenemos el nombre del archivo
+        filename = secure_filename(ad_file.filename)
+
+        # Separamos el nombre del archivo
+        file = filename.split('.')
+        
+        if file[1] in ALLOWED_EXTENSIONS:
+            df = pd.read_csv(ad_file)
+
+            # Obtenemos los valores de la variable clase
+            valores = df[df.columns[int(request.form['v_clase'])-1]].unique()
+
+            # Variable clase
+            Y = np.array(df[[df.columns[int(request.form['v_clase'])-1]]])
+
+            # Obtenemos las variables predictorias
+            ints = []
+
+            for element in request.form.getlist('colum[]'):
+                ints.append(int(element)-1)
+
+            # Variables predictoras
+            X = df.iloc[:,ints].values  #iloc para seleccionar filas y columnas
+
+            if int(request.form['tipoArbol']) == 1:
+                # Separamos los datos
+                X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X, Y, 
+                                                                    test_size = 0.2, 
+                                                                    random_state = 1234, 
+                                                                    shuffle = True)
+
+                # Entrenamos el modelo
+                PronosticoAD = DecisionTreeRegressor(max_depth=int(request.form['max_depth']),
+                                    min_samples_split=int(request.form['min_samples_split']),
+                                    min_samples_leaf=int(request.form['min_samples_leaf']), 
+                                    random_state=0)
+
+                PronosticoAD.fit(X_train, Y_train)
+
+                #Se genera el pronóstico
+                Y_Pronostico = PronosticoAD.predict(X_test)
+
+                # Se calcula la exactitud promedio de la validación
+                score = r2_score(Y_test, Y_Pronostico)
+
+                # Obtenemos los parámetros del modelo
+                criterio = PronosticoAD.criterion
+
+                importancia = PronosticoAD.feature_importances_
+
+                mae = mean_absolute_error(Y_test, Y_Pronostico)
+
+                mse = mean_squared_error(Y_test, Y_Pronostico)
+
+                rmse = mean_squared_error(Y_test, Y_Pronostico, squared=False)
+
+                return render_template('arboles_decision_resultados_regresion.html', score = score, 
+                    criterio = criterio, importancia = importancia, mae = mae, mse = mse, rmse = rmse,
+                    valores = valores, X = df.iloc[:,ints], Y = df.columns[int(request.form['v_clase'])-1],
+                    max_depth=int(request.form['max_depth']),min_samples_split=int(request.form['min_samples_split']),
+                    min_samples_leaf=int(request.form['min_samples_leaf']), random_state=0)
+            
+            elif int(request.form['tipoArbol']) == 2:
+                # Separamos los datos
+                X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, 
+                                                                                test_size = 0.2, 
+                                                                                random_state = 0,
+                                                                                shuffle = True)
+
+                # Entrenamos el modelo
+                ClasificacionAD = DecisionTreeClassifier(max_depth=int(request.form['max_depth']),
+                                    min_samples_split=int(request.form['min_samples_split']),
+                                    min_samples_leaf=int(request.form['min_samples_leaf']), 
+                                    random_state=0)
+                ClasificacionAD.fit(X_train, Y_train)
+
+                #Se calcula la exactitud promedio de la validación
+                score = ClasificacionAD.score(X_validation, Y_validation)
+
+                #Matriz de clasificación
+                Y_Clasificacion = ClasificacionAD.predict(X_validation)
+                Matriz_Clasificacion = pd.crosstab(Y_validation.ravel(), 
+                                                Y_Clasificacion, 
+                                                rownames=['Real'], 
+                                                colnames=['Clasificación']) 
+                
+                
+                
+                return render_template('arboles_decision_resultados_clasificacion.html', score = score, 
+                    tables=[ Matriz_Clasificacion.to_html(classes='data')], titles=Matriz_Clasificacion.columns.values,
+                    valores = valores, X = df.iloc[:,ints], Y = df.columns[int(request.form['v_clase'])-1],
+                    max_depth=int(request.form['max_depth']),min_samples_split=int(request.form['min_samples_split']),
+                    min_samples_leaf=int(request.form['min_samples_leaf']), random_state=0)
+                            
+    else:     
+        return render_template('arboles_decision_parametros.html')
 
 
+# --- { BOSQUES ALEATORIOS } ---
+@app.route('/bosques_aleatorios')
+def ba():
+    return render_template('bosques_aleatorios.html')
+
+@app.route('/bosques_aleatorios/parametros',methods=['GET', 'POST'])
+def ba_upload():
+    if request.method == 'POST':
+        #Importamos los datos
+        ba_file = request.files["ba_csvfile"]
+
+        # Obtenemos el nombre del archivo
+        filename = secure_filename(ba_file.filename)
+
+        # Separamos el nombre del archivo
+        file = filename.split('.')
+        
+        if file[1] in ALLOWED_EXTENSIONS:
+            df = pd.read_csv(ba_file)
+
+            # Preparamos la imagen para mostrarla en la página web
+            img = BytesIO()
+
+            Corrdf = df.corr(method='pearson')
+            plt.figure(figsize=(14,14))
+            MatrizInf = np.triu(Corrdf)
+            sns.heatmap(Corrdf, cmap='RdBu_r', annot=True, mask=MatrizInf)
 
 
-# --- { Redireccionando } ---
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/reglas_asociacion')
-def ra():
-    return render_template('reglas_asociacion.html')
-
-@app.route('/metricas_distancia')
-def md():
-    return render_template('metricas_distancia.html')
-
-@app.route('/clustering')
-def cl():
-    return render_template('clustering.html')
-
-@app.route('/regresion_logistica')
-def rl():
-    return render_template('regresion_logistica.html')
-
-@app.route('/arboles_decision')
-def ad():
-    return render_template('arboles_decision.html')
+            plt.savefig(img, format='png')
+            plt.close()
+            img.seek(0)
+            plot_url = base64.b64encode(img.getvalue()).decode('utf8')
 
 
+            # Obtenemos el nombre de las columnas del dataframe para la selección manual
+            columns_names = df.columns.values
 
-# --- { Main } ---
-if __name__ == '_main_':
-    
-    app.run(host='0.0.0.0', port=80)
-    
+            return render_template('bosques_aleatorios_parametros.html',columns_names_list = list(columns_names), 
+                plot_url=plot_url, filename = filename)
+        
+    else:   
+        
+        return render_template('bosques_aleatorios_parametros.html')
 
 
+@app.route('/bosques_aleatorios/resultados',methods=['GET', 'POST'])
+def bosques_aleatorios():
+    if request.method == 'POST':
+        #Importamos los datos
+        ba_file = request.files["ba_csvfile"]
 
+        # Obtenemos el nombre del archivo
+        filename = secure_filename(ba_file.filename)
+
+        # Separamos el nombre del archivo
+        file = filename.split('.')
+        
+        if file[1] in ALLOWED_EXTENSIONS:
+            df = pd.read_csv(ba_file)
+
+            # Obtenemos los valores de la variable clase
+            valores = df[df.columns[int(request.form['v_clase'])-1]].unique()
+
+            # Variable clase
+            Y = np.array(df[[df.columns[int(request.form['v_clase'])-1]]])
+
+            # Obtenemos las variables predictorias
+            ints = []
+
+            for element in request.form.getlist('colum[]'):
+                ints.append(int(element)-1)
+
+            # Variables predictoras
+            X = df.iloc[:,ints].values  #iloc para seleccionar filas y columnas
+
+            if int(request.form['tipoArbol']) == 1:
+                # Separamos los datos
+                X_train, X_test, Y_train, Y_test = model_selection.train_test_split(X, Y, 
+                                                                    test_size = 0.2, 
+                                                                    random_state = 1234, 
+                                                                    shuffle = True)
+
+                # Entrenamos el modelo
+                PronosticoBA = RandomForestRegressor(max_depth=int(request.form['max_depth']),
+                                    min_samples_split=int(request.form['min_samples_split']),
+                                    min_samples_leaf=int(request.form['min_samples_leaf']), 
+                                    random_state=0)
+
+                PronosticoBA.fit(X_train, Y_train)
+
+                #Se genera el pronóstico
+                Y_Pronostico = PronosticoBA.predict(X_test)
+
+                # Se calcula la exactitud promedio de la validación
+                score = r2_score(Y_test, Y_Pronostico)
+
+                # Obtenemos los parámetros del modelo
+                criterio = PronosticoBA.criterion
+
+                importancia = PronosticoBA.feature_importances_
+
+                mae = mean_absolute_error(Y_test, Y_Pronostico)
+
+                mse = mean_squared_error(Y_test, Y_Pronostico)
+
+                rmse = mean_squared_error(Y_test, Y_Pronostico, squared=False)
+
+                return render_template('bosques_aleatorios_resultados_regresion.html', score = score, 
+                    criterio = criterio, importancia = importancia, mae = mae, mse = mse, rmse = rmse,
+                    valores = valores, X = df.iloc[:,ints], Y = df.columns[int(request.form['v_clase'])-1],
+                    max_depth=int(request.form['max_depth']),min_samples_split=int(request.form['min_samples_split']),
+                    min_samples_leaf=int(request.form['min_samples_leaf']), random_state=0)
+            
+            elif int(request.form['tipoArbol']) == 2:
+                # Separamos los datos
+                X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, 
+                                                                                test_size = 0.2, 
+                                                                                random_state = 0,
+                                                                                shuffle = True)
+
+                # Entrenamos el modelo
+                ClasificacionBA = RandomForestClassifier(max_depth=int(request.form['max_depth']),
+                                    min_samples_split=int(request.form['min_samples_split']),
+                                    min_samples_leaf=int(request.form['min_samples_leaf']), 
+                                    random_state=0)
+                ClasificacionBA.fit(X_train, Y_train)
+
+                #Se calcula la exactitud promedio de la validación
+                score = ClasificacionBA.score(X_validation, Y_validation)
+
+                #Matriz de clasificación
+                Y_Clasificacion = ClasificacionBA.predict(X_validation)
+                Matriz_Clasificacion = pd.crosstab(Y_validation.ravel(), 
+                                                Y_Clasificacion, 
+                                                rownames=['Real'], 
+                                                colnames=['Clasificación']) 
+                
+                
+                
+                return render_template('bosques_aleatorios_resultados_clasificacion.html', score = score, 
+                    tables=[ Matriz_Clasificacion.to_html(classes='data')], titles=Matriz_Clasificacion.columns.values,
+                    valores = valores, X = df.iloc[:,ints], Y = df.columns[int(request.form['v_clase'])-1],
+                    max_depth=int(request.form['max_depth']),min_samples_split=int(request.form['min_samples_split']),
+                    min_samples_leaf=int(request.form['min_samples_leaf']), random_state=0)
+                            
+    else:     
+        return render_template('arboles_decision_parametros.html')

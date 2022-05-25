@@ -1,6 +1,6 @@
 {% extends './base.html' %}
 
-{% block title%}Árboles de decisión{% endblock%}
+{% block title%}Bosques aleatorios{% endblock%}
 
 {% block navbar%}
     <li class="nav-item">
@@ -13,7 +13,7 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/reglas_asociacion"><i class="fa-solid fa-magnifying-glass ms-2 me-4"></i>Reglas de asociación</a></li>
-            <li><a class="dropdown-item" href="/metricas_distancia"><i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
+            <li><a class="dropdown-item" href="/metricas_distancia"></i> <i class="fa-solid fa-pen-ruler ms-2 me-4"></i> Métricas de distancia</a></li>
             <li><a class="dropdown-item" href="/clustering"><i class="fa-solid fa-circle-nodes ms-2 me-4"></i>Clustering</a></li>
             <li><a class="dropdown-item" href="/regresion_logistica"><i class="fa-solid fa-chart-line ms-2 me-4"></i>Regresión logística</a></li>
             <li><a class="dropdown-item" href="/arboles_decision"><i class="fa-solid fa-tree ms-2 me-4"></i>Árboles de decisión</a></li> 
@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="row row-header">
                 <div class="col-12">
-                    <h1><i class="fa-solid fa-tree me-4"></i>Árboles de decisión</h1>
+                    <h1><i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-4"></i>Bosques aleatorios</h1>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
       
         <ol class="col-12 breadcrumb">
             <li class="breadcrumb-item"><a href="/"><i class="fa-solid fa-house me-2"></i></a></li>
-            <li class="breadcrumb-item"><a href="/arboles_decision">  <i class="fa-solid fa-tree me-2"></i>Árboles de decisión</a></li>
+            <li class="breadcrumb-item"><a href="/bosques_aleatorios">  <i class="fa-solid fa-tree"></i><i class="fa-solid fa-tree me-2"></i>Bosques aleatorios</a></li>
             <li class="breadcrumb-item active"><i class="fa-solid fa-gear me-2"></i>Parámetros</li>
        
         </ol>
@@ -65,7 +65,8 @@
 
 
 
-        <form action="/arboles_decision/resultados" method="POST" enctype="multipart/form-data">
+        <form action="/bosques_aleatorios/resultados" method="POST" enctype="multipart/form-data">
+
             <label for="colum[]">Variables predictoras</label>
             <div class="form-group mb-4">
                 <div class="input-group">
@@ -93,24 +94,27 @@
                 </div>
             </div>
 
-
-            <label for="tipoArbol">Tipo de árbol</label>
+            <label for="tipoArbol">Bosques aleatorios</label>
             <div class="form-group mb-4">
-                <div class="input-group">
-                        
-                    <select class="form-select" name="tipoArbol" aria-label="Default select example">
-                        
+                <div class="input-group">    
+                    <select class="form-select" name="tipoArbol" aria-label="Default select example">       
                         <option value="1">Regresión</option>
-                        <option value="2">Clasificación</option>
-                        
+                        <option value="2">Clasificación</option>       
                     </select>
-                
-                    
                 </div>
             </div>
 
-         
-            <label for="max_depth">Profundidad máxima del árbol (max_depth)</label>
+            <!-- Form -->
+            <label for="max_depth">Número de estimadores (n_estimators)</label>
+            <div class="form-group mb-4">
+                <div class="input-group">
+                    <input type="range" class="form-range" min="2" max="500"  value="100" step="1" name="max_depth" oninput="this.nextElementSibling.value = this.value">
+                    <output>500</output>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <label for="max_depth">Máxima profundidad del árbol (max_depth)</label>
             <div class="form-group mb-4">
                 <div class="input-group">
                     <input type="range" class="form-range" min="1" max="100"  value="100" step="1" name="max_depth" oninput="this.nextElementSibling.value = this.value">
@@ -118,7 +122,7 @@
                 </div>
             </div>
 
-          
+            <!-- Form -->
             <label for="min_samples_split">Cantidad mínima de datos en los nodos de decisión(min_samples_split)</label>
             <div class="form-group mb-4">
                 
@@ -128,7 +132,7 @@
                 </div>
             </div>
              
-    
+            <!-- Form -->
             <label for="min_samples_leaf">Cantidad mínima de datos en los nodos hoja(min_samples_leaf)</label>
             <div class="form-group mb-4">
                 
@@ -138,17 +142,17 @@
                 </div>
             </div>
            
-            <label for="ad_csvfile">Vuelve a subir el archivo <b>{{filename}}</b></label>
+            <label for="ba_csvfile">Vuelve a subir el archivo <b>{{filename}}</b></label>
             <div class="form-group mb-4">
                 <div class="input-group">     
                     <span class="input-group-text" id="basic-addon4"><i class="fa-solid fa-file"></i></span>
-                    <input class="form-control" type = "file" id="ad_csvfile" name="ad_csvfile" accept=".csv" required/>
+                    <input class="form-control" type = "file" id="ba_csvfile" name="ba_csvfile" accept=".csv" required/>
                 </div>
             </div>
 
             <!-- End of Form -->
             <div class="d-grid">
-                <button type="submit" class="btn btn-dark">Obtener árbol de decisión</button>
+                <button type="submit" class="btn btn-dark">Obtener bosque aleatorio</button>
             </div>
             
             
