@@ -705,7 +705,8 @@ def bosques_aleatorios():
                                                                     shuffle = True)
 
                 # Entrenamos el modelo
-                PronosticoBA = RandomForestRegressor(max_depth=int(request.form['max_depth']),
+                PronosticoBA = RandomForestRegressor(n_estimators=int(request.form['n_estimators']),
+                                    max_depth=int(request.form['max_depth']),
                                     min_samples_split=int(request.form['min_samples_split']),
                                     min_samples_leaf=int(request.form['min_samples_leaf']), 
                                     random_state=0)
@@ -743,7 +744,8 @@ def bosques_aleatorios():
                                                                                 shuffle = True)
 
                 # Entrenamos el modelo
-                ClasificacionBA = RandomForestClassifier(max_depth=int(request.form['max_depth']),
+                ClasificacionBA = RandomForestClassifier(n_estimators=int(request.form['n_estimators']),
+                                    max_depth=int(request.form['max_depth']),
                                     min_samples_split=int(request.form['min_samples_split']),
                                     min_samples_leaf=int(request.form['min_samples_leaf']), 
                                     random_state=0)
