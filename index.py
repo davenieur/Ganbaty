@@ -734,7 +734,7 @@ def bosques_aleatorios():
                     criterio = criterio, importancia = importancia, mae = mae, mse = mse, rmse = rmse,
                     valores = valores, X = df.iloc[:,ints], Y = df.columns[int(request.form['v_clase'])-1],
                     max_depth=int(request.form['max_depth']),min_samples_split=int(request.form['min_samples_split']),
-                    min_samples_leaf=int(request.form['min_samples_leaf']), random_state=0)
+                    min_samples_leaf=int(request.form['min_samples_leaf']),n_estimators=int(request.form['n_estimators']))
             
             elif int(request.form['tipoArbol']) == 2:
                 # Separamos los datos
@@ -767,7 +767,7 @@ def bosques_aleatorios():
                     tables=[ Matriz_Clasificacion.to_html(classes='data')], titles=Matriz_Clasificacion.columns.values,
                     valores = valores, X = df.iloc[:,ints], Y = df.columns[int(request.form['v_clase'])-1],
                     max_depth=int(request.form['max_depth']),min_samples_split=int(request.form['min_samples_split']),
-                    min_samples_leaf=int(request.form['min_samples_leaf']), random_state=0)
+                    min_samples_leaf=int(request.form['min_samples_leaf']),n_estimators=int(request.form['n_estimators']))
                             
     else:     
         return render_template('arboles_decision_parametros.html')
