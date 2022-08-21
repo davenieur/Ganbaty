@@ -1,2 +1,11 @@
-Flask
-Flask-RESTful
+flask
+pybase64
+matplotlib
+werkzeug
+pandas
+numpy
+apyori
+scipy
+sklearn
+kneed
+seaborn
